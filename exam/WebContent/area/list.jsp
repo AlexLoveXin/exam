@@ -50,6 +50,32 @@
         </div>
     </div>
 </div>
+<!-- 地区修改modal -->
+<div class="modal fade" id="editarea" role="dialog" tabindex="-1" aria-labelledby="修改地区窗口">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="关闭">&times;</button>
+                <h4 class="modal-title">修改地区<span class="sr-only">修改地区</span></h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="editform" method="post" action="${pageContext.request.contextPath }/area/editArea.do">
+                    <div class="form-group" id="areaNameFormGroup">
+                        <label class="control-label col-md-2 col-sm-2" for="areaNameAdd">地区名称</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" name="area.name" placeholder="地区名称" id="areaNameEdit">
+                            <input type="hidden" name="area.id" id="areaIdEdit">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" aria-label="关闭">关闭</button>
+                <button type="button" class="btn btn-default" aria-label="保存" id="editbtn">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- 顶部导航 -->
 <%@ include file="../common/nav_back.jsp" %>
 <div class="container-fluid">
@@ -83,7 +109,7 @@
                     			<button type="button" class="btn btn-xs btn-default">上移<span class="sr-only">上移</span></button>&nbsp;
                     			<button type="button" class="btn btn-xs btn-default">下移<span class="sr-only">下移</span></button>&nbsp;
                     			<button type="button" class="btn btn-xs btn-default">删除<span class="sr-only">删除</span></button>&nbsp;
-                    			<button type="button" class="btn btn-xs btn-default">修改<span class="sr-only">修改</span></button>
+                    			<button type="button" class="btn btn-xs btn-default" onclick="edit('${obj.id}');">修改<span class="sr-only">修改</span></button>
                     		</td>
                     	</tr>
                     	</c:forEach>
@@ -172,6 +198,14 @@
 			$('#searchform').submit();
 		});
 	});
+	//修改
+	function edit(id) {
+		$.post('${pageContext.request.contextPath}/area/getArea.do',{"area.id":id},function(result){
+			var r = eval('('+result+')');
+			$('#areaNameEdit').val(r.name);
+			$('#areaIdEdit').val(r.id);
+		});
+	}
 	//页码跳转
 	function toPage(page) {
 		window.location.href='${pageContext.request.contextPath}/area/listArea.do?page='+page+'&area.name='+$.trim($('#areaName').val());
