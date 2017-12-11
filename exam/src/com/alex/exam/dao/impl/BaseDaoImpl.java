@@ -23,7 +23,7 @@ import com.alex.exam.dao.BaseDao;
  * @param <pk> 主键类型
  */
 public abstract class BaseDaoImpl<T, pk extends Serializable> extends HibernateDaoSupport implements BaseDao<T, pk> {
-	private Logger logger = LogManager.getLogger("alex");
+	private Logger logger = LogManager.getLogger(BaseDaoImpl.class);
 	private Class<T> clazz;
 	public BaseDaoImpl(Class<T> clazz) {
 		logger.debug("BaseDaoImpl constuctor().");

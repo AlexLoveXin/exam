@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=utf-8"
+    pageEncoding="utf-8"%>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -5,7 +7,7 @@
 <meta http-equiv="x-ua-compatible" content="IE=edge"><!-- 优先以ie的edge模式打开页面 -->
 <meta name="viewport" content="width=device-width,initial-scale=1"><!-- 适配移动端 -->
 <meta name="renderer" content="webkit"><!-- 刷新优先以google模式显示页面 -->
-<title>index</title>
+<title>考试平台-后台管理</title>
 <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css">
 <!--[if lt IE 9]>
 <script type="text/javascript" src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -38,43 +40,10 @@
         </div>
     </div>
 </div>
-<nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#menu" aria-expanded="false">
-                <span class="sr-only">菜单</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <p class="navbar-text">考试平台后台管理<span class="sr-only">考试平台后台管理</span></p>
-        </div>
-        <div id="menu" class="collapse navbar-collapse">
-            <ul class="nav navbar-nav navbar-right" style="margin-right: 15px;">
-                <li><p class="navbar-text">用户名<span class="sr-only">用户名</span></p></li>
-                <li>
-                    <button class="btn btn-primary navbar-btn" type="button">注销<span class="sr-only">注销</span></button>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<%@ include file="common/nav_back.jsp" %>
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-2 col-sm-2 sidebar">
-            <ul class="nav nav-sidebar">
-                <li class="active"><a href="javascript:void(0);" style="text-align: center;cursor: text;">系统配置<span class="sr-only">系统配置</span></a></li>
-                <li><a href="#">时间配置<span class="sr-only">时间配置</span></a></li>
-                <li><a href="#">分数调整配置<span class="sr-only">分数调整配置</span></a></li>
-                <li><a href="#">考试次数<span class="sr-only">考试次数</span></a></li>
-            </ul>
-            <ul class="nav nav-sidebar">
-                <li><a href="area/listArea.do">地区管理<span class="sr-only">地区管理</span></a></li>
-            </ul>
-            <ul class="nav nav-sidebar">
-                <li><a href="#">学校或单位<span class="sr-only">学校或单位</span></a></li>
-            </ul>
-        </div>
+        <%@ include file="common/left_back.jsp" %>
         <div class="col-md-10 col-md-offset-2 col-sm-10 col-sm-offset-2 main">
             <h3 class="page-header">地区</h3>
             <form class="form-inline">

@@ -59,12 +59,12 @@
     	<!-- 内容部分 -->
     	<div class="col-md-10 col-md-offset-2 col-sm-10 col-sm-offset-2 main">
             <h3 class="page-header">地区<span class="sr-only">地区</span></h3>
-            <form class="form-inline">
+            <form class="form-inline" id="searchform" method="post" action="${pageContext.request.contextPath }/area/listArea.do">
                 <div class="form-group">
                     <label class="sr-only" for="areaName">地区名称</label>
-                    <input type="text" class="form-control" name="area.name" placeholder="地区名称" id="areaName">
+                    <input type="text" class="form-control" name="area.name" placeholder="地区名称" id="areaName" value="${area.name }">
                 </div>
-                <button type="button" class="btn btn-default">搜索<span class="sr-only">搜索</span></button>
+                <button type="button" class="btn btn-default" id="searchbtn">搜索<span class="sr-only">搜索</span></button>
                 <button type="button" class="btn btn-default" data-toggle="modal" data-target="#addarea">新增<span class="sr-only">新增</span></button>
             </form>
             <br>
@@ -91,13 +91,30 @@
                 </table>
             </div>
             <ul class="pagination">
-                <li><a href="#">首页<span class="sr-only">首页</span></a></li>
-                <li class="disabled"><a href="${pageContext.request.contextPath }/area/listArea.do?page=${page-1}">前页<span class="sr-only">前页</span></a></li>
+            	<c:if test="${page==1 }">
+            	<li class="disabled"><a href="javascript:void(0);">首页<span class="sr-only">首页</span></a></li>
+            	<li class="disabled"><a href="javascript:void(0);">前页<span class="sr-only">前页</span></a></li>
+            	</c:if>
+            	<c:if test="${page!=1 }">
+            	<li><a href="javascript:toPage('1');">首页<span class="sr-only">首页</span></a></li>
+            	<li><a href="javascript:toPage('${page-1}');">前页<span class="sr-only">前页</span></a></li>
+            	</c:if>
                 <c:forEach begin="1" end="${pages }" var="p">
-                <li><a href="${pageContext.request.contextPath }/area/listArea.do?page=${p}">${p }<span class="sr-only">${p }</span></a></li>
+                <c:if test="${page==p }">
+            	<li class="disabled"><a href="javascript:void(0);">${p }<span class="sr-only">${p }</span></a></li>
+            	</c:if>
+            	<c:if test="${page!=p }">
+            	<li><a href="javascript:toPage('${p}');">${p }<span class="sr-only">${p }</span></a></li>
+            	</c:if>
                 </c:forEach>
-                <li><a href="#">后页<span class="sr-only">后页</span></a></li>
-                <li><a href="#">尾页<span class="sr-only">尾页</span></a></li>
+                <c:if test="${page==pages||pages==0 }">
+            	<li class="disabled"><a href="javascript:void(0);">后页<span class="sr-only">后页</span></a></li>
+                <li class="disabled"><a href="javascript:void(0);">尾页<span class="sr-only">尾页</span></a></li>
+            	</c:if>
+            	<c:if test="${page!=pages&&pages!=0 }">
+            	<li><a href="javascript:toPage('${page+1}');">后页<span class="sr-only">后页</span></a></li>
+                <li><a href="javascript:toPage('${pages}');">尾页<span class="sr-only">尾页</span></a></li>
+            	</c:if>
             </ul>
         </div>
     </div>
@@ -108,9 +125,28 @@
 		//保存按钮点击事件
 		$('#savebtn').on('click', function(){
 			if($.trim($('#areaNameAdd').val())!=''){//地区名称不为空
-				$('#areaNameAdd').val($.trim($('#areaNameAdd').val()));
-				$('#addform').submit();
-				$('#addarea').modal('hide');
+				//检查地区名称是否在数据库中存在
+				$.post('${pageContext.request.contextPath}/area/checkNameArea.do',{"area.name":$.trim($('#areaNameAdd').val())},function(result){
+					var r = eval('('+result+')');
+					if(r.exist) {
+						//弹出提示
+						$('#popover .popovertitle').html('提示');
+				        $('#popover .popover-content').html('地区名称'+$.trim($('#areaNameAdd').val())+'在系统中已存在');
+				        $('#popover').show();
+				        setTimeout(function () {
+				        	$('#popover').hide();
+				        }, 5000);
+				        $('#closepopover').on('click', function() {
+				        	$('#popover').hide();
+				        });
+				        //地区名称输入框加上错误样式
+				        $('#areaNameFormGroup').addClass('has-error');
+					} else {
+						$('#areaNameAdd').val($.trim($('#areaNameAdd').val()));
+						$('#addform').submit();
+						$('#addarea').modal('hide');
+					}
+				});
 			} else {//地区名称为空
 				//弹出提示
 				$('#popover .popovertitle').html('提示');
@@ -131,7 +167,15 @@
 		$('#areaNameAdd').on('keydown', function(){
 			$('#areaNameFormGroup').removeClass('has-error');
 		});
+		//查询按钮点击事件
+		$('#searchbtn').on('click', function(){
+			$('#searchform').submit();
+		});
 	});
+	//页码跳转
+	function toPage(page) {
+		window.location.href='${pageContext.request.contextPath}/area/listArea.do?page='+page+'&area.name='+$.trim($('#areaName').val());
+	}
 </script>
 <script type="text/javascript" src="../bootstrap/js/bootstrap.js"></script>
 </body>

@@ -2,13 +2,23 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
   <display-name>exam</display-name>
   <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
     <welcome-file>index.html</welcome-file>
     <welcome-file>index.htm</welcome-file>
-    <welcome-file>index.jsp</welcome-file>
     <welcome-file>default.html</welcome-file>
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  <jsp-config>
+  	<taglib>
+  		<taglib-uri>http://java.sun.com/jsp/jstl/core</taglib-uri>
+  		<taglib-location>/WEB-INF/c.tld</taglib-location>
+  	</taglib>
+  	<taglib>
+  		<taglib-uri>/struts-tags</taglib-uri>
+  		<taglib-location>/WEB-INF/struts-tags.tld</taglib-location>
+  	</taglib>
+  </jsp-config>
   <context-param>
   	<param-name>webAppRootKey</param-name>
   	<param-value>webApp.root</param-value>

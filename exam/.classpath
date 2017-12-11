@@ -32,7 +32,6 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jandex-2.0.3.Final.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/javassist-3.20.0-GA.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jboss-logging-3.3.0.Final.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jstl.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/log4j-api-2.8.2.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/log4j-core-2.8.2.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/log4j-web-2.8.2.jar"/>
@@ -49,8 +48,9 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/spring-orm-4.3.12.RELEASE.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/spring-tx-4.3.12.RELEASE.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/spring-web-4.3.12.RELEASE.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/standard.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/struts2-core-2.5.13.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/struts2-spring-plugin-2.5.13.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jstl.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/standard.jar"/>
 	<classpathentry kind="output" path="WebContent/WEB-INF/classes"/>
 </classpath>

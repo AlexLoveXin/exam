@@ -4,16 +4,21 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.BeanUtils;
 
+import com.alex.exam.exception.MyException;
 import com.alex.exam.model.Area;
 import com.alex.exam.service.AreaService;
 
 public class AreaAction {
-	private Logger logger = LogManager.getLogger("alex");
+	private Logger logger = LogManager.getLogger(AreaAction.class);
 	private AreaService areaService;
 	public void setAreaService(AreaService areaService) {
 		this.areaService = areaService;
@@ -54,7 +59,7 @@ public class AreaAction {
 	public long getPages() {
 		return pages;
 	}
-	public String list() {
+	public String list() throws MyException {
 		try {
 			if(page==0) {
 				page=1;
@@ -73,11 +78,12 @@ public class AreaAction {
 			pages = total%pageSize==0?total/pageSize:(total/pageSize+1);
 			logger.debug("list size=="+list.size()+"\ntotal="+total);
 		} catch (Exception e) {
-			logger.error("Area list error", e);
+			logger.error("Area list error! "+MyException.position(e)+" errorCode:"+MyException.ERROR_CODE_2, e);
+			throw new MyException(MyException.ERROR_CODE_2, "查询地区列表出错");
 		}
 		return "list";
 	}
-	public String add() {
+	public String add() throws MyException {
 		try {
 			if(null!=area && StringUtils.isNotBlank(area.getName())) {
 				area.setName(StringUtils.trim(area.getName()));
@@ -89,8 +95,30 @@ public class AreaAction {
 				areaService.save(area2);
 			}
 		} catch (Exception e) {
-			logger.error("Area add error", e);
+			logger.error("Area add error! "+MyException.position(e)+" errorCode:"+MyException.ERROR_CODE_1, e);
+			throw new MyException(MyException.ERROR_CODE_1, "保存地区信息出错");
 		}
 		return "toList";
+	}
+	public void checkName() throws MyException {
+		try {
+			StringBuffer sb = new StringBuffer();
+			sb.append("{\"exist\":");
+			if(null!=area && StringUtils.isNotBlank(area.getName())) {
+				if(areaService.list(" where name=? ", new Object[]{area.getName().trim()}, null, -1, -1).size()>0) {//存在
+					sb.append(true);
+				} else {//不存在
+					sb.append(false);
+				}
+			}
+			sb.append("}");
+			HttpServletResponse response = ServletActionContext.getResponse();
+			response.setContentType("text/html;charset=utf-8");
+			ServletOutputStream out = response.getOutputStream();
+			out.println(sb.toString());
+		} catch (Exception e) {
+			logger.error("check area name error! "+MyException.position(e)+" errorCode:"+MyException.ERROR_CODE_3, e);
+			throw new MyException(MyException.ERROR_CODE_3, "检查地区名称是否存在出错");
+		}
 	}
 }

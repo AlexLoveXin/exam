@@ -6,10 +6,16 @@
 	<!-- 配置action后缀名为do -->
 	<constant name="struts.action.extension" value="do"></constant>
 	<package name="area" namespace="/area" extends="struts-default">
+		<global-results>
+			<result name="error">/error.jsp</result>
+		</global-results>
+		<global-exception-mappings>
+			<exception-mapping result="error" exception="com.alex.exam.exception.MyException"></exception-mapping>
+		</global-exception-mappings>
 		<action name="*Area" class="areaAction" method="{1}">
 			<result name="{1}">/area/{1}.jsp</result>
 			<result name="toList" type="redirectAction">listArea.do</result>
-			<allowed-methods>list,add</allowed-methods><!-- 使用通配符的请求，方法必须在此处添加上 -->
+			<allowed-methods>list,add,checkName</allowed-methods><!-- 使用通配符的请求，方法必须在此处添加上 -->
 		</action>
 	</package>
 </struts>
