@@ -69,7 +69,7 @@ public class AreaAction extends BaseAction {
 			if(page==0) {
 				page=1;
 			}
-			int pageSize = 10;
+			int pageSize = PAGE_SIZE;
 			String where = " where 1=1 ";
 			List<Object> params = new ArrayList<Object>();
 			if(StringUtils.isNotBlank(name)) {

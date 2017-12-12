@@ -11,6 +11,6 @@
                 <li><a href="${pageContext.request.contextPath }/area/listArea.do">地区管理<span class="sr-only">地区管理</span></a></li>
             </ul>
             <ul class="nav nav-sidebar">
-                <li><a href="#">学校或单位<span class="sr-only">学校或单位</span></a></li>
+                <li><a href="${pageContext.request.contextPath }/org/listOrg.do">学校或单位<span class="sr-only">学校或单位</span></a></li>
             </ul>
         </div>

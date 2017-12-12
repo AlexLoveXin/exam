@@ -76,14 +76,22 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
 	<bean id="areaDao" class="com.alex.exam.dao.impl.AreaDaoImpl" parent="baseDao"></bean>
+	<bean id="orgDao" class="com.alex.exam.dao.impl.OrgDaoImpl" parent="baseDao"></bean>
 	
 	<!-- services -->
 	<bean id="areaService" class="com.alex.exam.service.impl.AreaServiceImpl">
 		<constructor-arg index="0" ref="areaDao"></constructor-arg>
 	</bean>
+	<bean id="orgService" class="com.alex.exam.service.impl.OrgServiceImpl">
+		<constructor-arg index="0" ref="orgDao"></constructor-arg>
+	</bean>
 	
 	<!-- actions -->
 	<bean id="areaAction" class="com.alex.exam.action.AreaAction" scope="prototype">
+		<property name="areaService" ref="areaService"></property>
+	</bean>
+	<bean id="orgAction" class="com.alex.exam.action.OrgAction" scope="prototype">
+		<property name="orgService" ref="orgService"></property>
 		<property name="areaService" ref="areaService"></property>
 	</bean>
 </beans>

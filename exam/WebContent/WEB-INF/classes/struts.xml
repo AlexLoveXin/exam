@@ -22,4 +22,21 @@
 			<allowed-methods>list,add,checkName,get,edit,del,moveup,movedown</allowed-methods><!-- 使用通配符的请求，方法必须在此处添加上 -->
 		</action>
 	</package>
+	<package name="org" namespace="/org" extends="struts-default">
+		<global-results>
+			<result name="error">/error.jsp</result>
+		</global-results>
+		<global-exception-mappings>
+			<exception-mapping result="error" exception="com.alex.exam.exception.MyException"></exception-mapping>
+		</global-exception-mappings>
+		<action name="*Org" class="orgAction" method="{1}">
+			<result name="{1}">/org/{1}.jsp</result>
+			<result name="toList" type="redirectAction">
+				<param name="actionName">listOrg.do</param>
+				<param name="page">${page}</param>
+				<param name="name">${name}</param>
+			</result>
+			<allowed-methods>list,add,checkName,get,edit,del,moveup,movedown</allowed-methods><!-- 使用通配符的请求，方法必须在此处添加上 -->
+		</action>
+	</package>
 </struts>

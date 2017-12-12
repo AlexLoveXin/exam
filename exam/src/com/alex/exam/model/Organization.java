@@ -8,6 +8,7 @@ public class Organization {
 	private int id;                    //主键
 	private String name;               //名称
 	private int orderby;               //排序字段
+	private Area area;                 //地区，多对一
 	public int getId() {
 		return id;
 	}
@@ -26,5 +27,10 @@ public class Organization {
 	public void setOrderby(int orderby) {
 		this.orderby = orderby;
 	}
-	
+	public Area getArea() {
+		return area;
+	}
+	public void setArea(Area area) {
+		this.area = area;
+	}
 }

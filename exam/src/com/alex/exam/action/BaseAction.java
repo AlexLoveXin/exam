@@ -12,6 +12,7 @@ import org.apache.struts2.ServletActionContext;
  *
  */
 public abstract class BaseAction {
+	public static final int PAGE_SIZE = 10;
 	/**
 	 * 获取HttpServletResponse
 	 * @return

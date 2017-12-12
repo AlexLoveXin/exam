@@ -36,6 +36,15 @@
   <listener>
   	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
+  <!-- OpenSessionInViewFilter -->
+  <filter>
+  	<filter-name>OpenSessionInViewFilter</filter-name>
+  	<filter-class>org.springframework.orm.hibernate5.support.OpenSessionInViewFilter</filter-class>
+  </filter>
+  <filter-mapping>
+  	<filter-name>OpenSessionInViewFilter</filter-name>
+  	<url-pattern>*.do</url-pattern>
+  </filter-mapping>
   <!-- struts2的核心过滤器 -->
   <filter>
   	<filter-name>StrutsPrepareAndExecuteFilter</filter-name>

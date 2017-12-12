@@ -8,7 +8,7 @@
 <meta http-equiv="x-ua-compatible" content="IE=edge"><!-- 优先以ie的edge模式打开页面 -->
 <meta name="viewport" content="width=device-width,initial-scale=1"><!-- 适配移动端 -->
 <meta name="renderer" content="webkit"><!-- 刷新优先以google模式显示页面 -->
-<title>考试平台-地区管理</title>
+<title>考试平台-学校或单位管理</title>
 <link rel="stylesheet" type="text/css" href="../bootstrap/css/bootstrap.css">
 <!--[if lt IE 9]>
 <script type="text/javascript" src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -18,8 +18,8 @@
 </head>
 <body>
 <!-- 删除数据form -->
-<form id="delform" action="${pageContext.request.contextPath }/area/delArea.do" method="post">
-	<input type="hidden" name="area.id" id="delid">
+<form id="delform" action="${pageContext.request.contextPath }/org/delOrg.do" method="post">
+	<input type="hidden" name="org.id" id="delid">
 </form>
 <!-- 删除确认弹出框 -->
 <div class="modal fade in" id="confirm" role="dialog" tabindex="-1" aria-labelledby="删除确认窗口">
@@ -48,20 +48,31 @@
     </h3>
     <div class="popover-content"></div>
 </div>
-<!-- 地区添加modal窗口 -->
-<div class="modal fade" id="addarea" role="dialog" tabindex="-1" aria-labelledby="新增地区窗口">
+<!-- 学校或单位添加modal窗口 -->
+<div class="modal fade" id="addorg" role="dialog" tabindex="-1" aria-labelledby="新增学校或单位窗口">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="关闭">&times;</button>
-                <h4 class="modal-title">新增地区<span class="sr-only">新增地区</span></h4>
+                <h4 class="modal-title">新增学校或单位<span class="sr-only">新增学校或单位</span></h4>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" id="addform" method="post" action="${pageContext.request.contextPath }/area/addArea.do">
+                <form class="form-horizontal" id="addform" method="post" action="${pageContext.request.contextPath }/org/addOrg.do">
+                    <div class="form-group" id="orgNameFormGroupAdd">
+                        <label class="control-label col-md-3 col-sm-3" for="orgNameAdd">学校或单位名称</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" name="org.name" placeholder="学校或单位名称" id="orgNameAdd">
+                        </div>
+                    </div>
                     <div class="form-group" id="areaNameFormGroupAdd">
-                        <label class="control-label col-md-2 col-sm-2" for="areaNameAdd">地区名称</label>
-                        <div class="col-md-10">
-                            <input type="text" class="form-control" name="area.name" placeholder="地区名称" id="areaNameAdd">
+                        <label class="control-label col-md-3 col-sm-3">地区名称</label>
+                        <div class="col-md-9">
+                            <select id="areaIdAdd" class="form-control" name="areaId">
+                            	<option value="0">--请选择--</option>
+                            	<c:forEach items="${areas }" var="obj">
+                            	<option value="${obj.id }">${obj.name }</option>
+                            	</c:forEach>
+                            </select>
                         </div>
                     </div>
                 </form>
@@ -73,23 +84,34 @@
         </div>
     </div>
 </div>
-<!-- 地区修改modal -->
-<div class="modal fade" id="editarea" role="dialog" tabindex="-1" aria-labelledby="修改地区窗口">
+<!-- 学校或单位修改modal -->
+<div class="modal fade" id="editorg" role="dialog" tabindex="-1" aria-labelledby="修改学校或单位窗口">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="关闭">&times;</button>
-                <h4 class="modal-title">修改地区<span class="sr-only">修改地区</span></h4>
+                <h4 class="modal-title">修改学校或单位<span class="sr-only">修改学校或单位</span></h4>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" id="editform" method="post" action="${pageContext.request.contextPath }/area/editArea.do">
-                    <div class="form-group" id="areaNameFormGroupEdit">
-                        <label class="control-label col-md-2 col-sm-2" for="areaNameEdit">地区名称</label>
-                        <div class="col-md-10">
-                            <input type="text" class="form-control" name="area.name" placeholder="地区名称" id="areaNameEdit">
-                            <input type="hidden" name="area.id" id="areaIdEdit">
+                <form class="form-horizontal" id="editform" method="post" action="${pageContext.request.contextPath }/org/editOrg.do">
+                    <div class="form-group" id="orgNameFormGroupEdit">
+                        <label class="control-label col-md-3 col-sm-3" for="orgNameEdit">学校或单位名称</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" name="org.name" placeholder="学校或单位名称" id="orgNameEdit">
+                            <input type="hidden" name="org.id" id="orgIdEdit">
                             <input type="hidden" name="page" value="${page }">
                             <input type="hidden" name="name" value="${name }">
+                        </div>
+                    </div>
+                    <div class="form-group" id="areaNameFormGroupEdit">
+                        <label class="control-label col-md-3 col-sm-3">地区名称</label>
+                        <div class="col-md-9">
+                            <select id="areaIdEdit" class="form-control" name="areaId">
+                            	<option value="0">--请选择--</option>
+                            	<c:forEach items="${areas }" var="obj">
+                            	<option value="${obj.id }">${obj.name }</option>
+                            	</c:forEach>
+                            </select>
                         </div>
                     </div>
                 </form>
@@ -109,20 +131,20 @@
     	<%@ include file="../common/left_back.jsp" %>
     	<!-- 内容部分 -->
     	<div class="col-md-10 col-md-offset-2 col-sm-10 col-sm-offset-2 main">
-            <h3 class="page-header">地区<span class="sr-only">地区</span></h3>
-            <form class="form-inline" id="searchform" method="post" action="${pageContext.request.contextPath }/area/listArea.do">
+            <h3 class="page-header">学校或单位<span class="sr-only">学校或单位</span></h3>
+            <form class="form-inline" id="searchform" method="post" action="${pageContext.request.contextPath }/org/listOrg.do">
                 <div class="form-group">
-                    <label class="sr-only" for="areaName">地区名称</label>
-                    <input type="text" class="form-control" name="name" placeholder="地区名称" id="areaName" value="${name }">
+                    <label class="sr-only" for="orgName">学校或单位名称</label>
+                    <input type="text" class="form-control" name="name" placeholder="学校或单位名称" id="orgName" value="${name }">
                 </div>
                 <button type="button" class="btn btn-default" id="searchbtn">搜索<span class="sr-only">搜索</span></button>
-                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#addarea">新增<span class="sr-only">新增</span></button>
+                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#addorg">新增<span class="sr-only">新增</span></button>
             </form>
             <br>
             <div class="table-responsive">
                 <table class="table table-bordered table-striped table-hover">
                     <thead>
-                    	<tr><th>#<span class="sr-only">序号</span></th><th>地区名称<span class="sr-only">地区名称</span></th><th>顺序<span class="sr-only">顺序</span></th><th width="20%">操作选项<span class="sr-only">操作选项</span></th></tr>
+                    	<tr><th>#<span class="sr-only">序号</span></th><th>学校或单位名称<span class="sr-only">学校或单位名称</span></th><th>顺序<span class="sr-only">顺序</span></th><th>地区<span class="sr-only">地区</span></th><th width="20%">操作选项<span class="sr-only">操作选项</span></th></tr>
                     </thead>
                     <tbody>
                     	<c:forEach items="${list }" var="obj" varStatus="vstatus">
@@ -130,6 +152,7 @@
                     		<td>${vstatus.count }</td>
                     		<td>${obj.name }</td>
                     		<td>${obj.orderby }</td>
+                    		<td>${obj.area.name }</td>
                     		<td>
                     			<button type="button" class="btn btn-xs btn-default" onclick="moveup('${obj.id}');">上移<span class="sr-only">上移</span></button>&nbsp;
                     			<button type="button" class="btn btn-xs btn-default" onclick="movedown('${obj.id}');">下移<span class="sr-only">下移</span></button>&nbsp;
@@ -175,36 +198,47 @@
 	$(function(){
 		//新增窗口保存按钮点击事件
 		$('#savebtn').on('click', function(){
-			if($.trim($('#areaNameAdd').val())!=''){//地区名称不为空
-				//检查地区名称是否在数据库中存在
-				$.post('${pageContext.request.contextPath}/area/checkNameArea.do',{"area.name":$.trim($('#areaNameAdd').val())},function(result){
+			if($('#areaIdAdd').val()==0) {
+				//弹出提示
+				tips('提示', '地区为必选项');
+		        //地区选择加上错误样式
+		        $('#areaNameFormGroupAdd').addClass('has-error');
+				return;
+			}
+			if($.trim($('#orgNameAdd').val())!=''){//学校或单位名称不为空
+				//检查学校或单位名称是否在数据库中存在
+				$.post('${pageContext.request.contextPath}/org/checkNameOrg.do',{"org.name":$.trim($('#orgNameAdd').val())},function(result){
 					if(result.indexOf('<html')==-1) {
 						var r = eval('('+result+')');
 						if(r.exist) {
 							//弹出提示
-							tips('提示', '地区名称'+$.trim($('#areaNameAdd').val())+'在系统中已存在');
-					        //地区名称输入框加上错误样式
-					        $('#areaNameFormGroupAdd').addClass('has-error');
+							tips('提示', '学校或单位名称'+$.trim($('#orgNameAdd').val())+'在系统中已存在');
+					        //学校或单位名称输入框加上错误样式
+					        $('#orgNameFormGroupAdd').addClass('has-error');
 						} else {
-							$('#areaNameAdd').val($.trim($('#areaNameAdd').val()));
+							$('#orgNameAdd').val($.trim($('#orgNameAdd').val()));
 							$('#addform').submit();
-							$('#addarea').modal('hide');
+							$('#addorg').modal('hide');
 						}
 					} else {
-						tips('错误', '检查地区名称是否存在出错');
+						tips('错误', '检查学校或单位名称是否存在出错');
 					}
 				});
-			} else {//地区名称为空
+			} else {//学校或单位名称为空
 				//弹出提示
-				tips('提示', '地区名称为必填项');
-		        //地区名称输入框加上错误样式
-		        $('#areaNameFormGroupAdd').addClass('has-error');
+				tips('提示', '学校或单位名称为必填项');
+		        //学校或单位名称输入框加上错误样式
+		        $('#orgNameFormGroupAdd').addClass('has-error');
 				return;
 			}
 		});
-		//新增窗口地区输入框一旦有输入，移除错误样式
-		$('#areaNameAdd').on('keydown', function(){
+		//新增窗口地区选择如果有改变，移除错误样式
+		$('#areaIdAdd').on('change', function(){
 			$('#areaNameFormGroupAdd').removeClass('has-error');
+		});
+		//新增窗口学校或单位名称输入框一旦有输入，移除错误样式
+		$('#orgNameAdd').on('keydown', function(){
+			$('#orgNameFormGroupAdd').removeClass('has-error');
 		});
 		//查询按钮点击事件
 		$('#searchbtn').on('click', function(){
@@ -212,36 +246,47 @@
 		});
 		//修改窗口保存按钮点击事件
 		$('#editbtn').on('click', function(){
-			if($.trim($('#areaNameEdit').val())!=''){//地区名称不为空
-				//检查地区名称是否在数据库中存在
-				$.post('${pageContext.request.contextPath}/area/checkNameArea.do',{"area.name":$.trim($('#areaNameEdit').val())},function(result){
+			if($('#areaIdAdd').val()==0) {
+				//弹出提示
+				tips('提示', '地区为必选项');
+		        //地区选择加上错误样式
+		        $('#areaNameFormGroupAdd').addClass('has-error');
+				return;
+			}
+			if($.trim($('#orgNameEdit').val())!=''){//地区名称不为空
+				//检查学校或单位名称是否在数据库中存在
+				$.post('${pageContext.request.contextPath}/org/checkNameOrg.do',{"org.name":$.trim($('#orgNameEdit').val())},function(result){
 					if(result.indexOf('<html')==-1) {
 						var r = eval('('+result+')');
 						if(r.exist) {
 							//弹出提示
-					        tips('提示', '地区名称'+$.trim($('#areaNameEdit').val())+'在系统中已存在');
-					        //地区名称输入框加上错误样式
-					        $('#areaNameFormGroupEdit').addClass('has-error');
+					        tips('提示', '学校或单位名称'+$.trim($('#orgNameEdit').val())+'在系统中已存在');
+					        //学校或单位名称输入框加上错误样式
+					        $('#orgNameFormGroupEdit').addClass('has-error');
 						} else {
-							$('#areaNameEdit').val($.trim($('#areaNameEdit').val()));
+							$('#orgNameEdit').val($.trim($('#orgNameEdit').val()));
 							$('#editform').submit();
-							$('#editarea').modal('hide');
+							$('#editorg').modal('hide');
 						}
 					} else {
-						tips('错误', '检查地区名称是否存在出错');
+						tips('错误', '检查学校或单位名称是否存在出错');
 					}
 				});
-			} else {//地区名称为空
+			} else {//学校或单位名称为空
 				//弹出提示
 		        tips('提示', '地区名称为必填项');
-		        //地区名称输入框加上错误样式
-		        $('#areaNameFormGroupEdit').addClass('has-error');
+		        //学校或单位名称输入框加上错误样式
+		        $('#orgNameFormGroupEdit').addClass('has-error');
 				return;
 			}
 		});
-		//修改窗口地区输入框一旦有输入，移除错误样式
-		$('#areaNameEdit').on('keydown', function(){
-			$('#areaNameFormGroupEdit').removeClass('has-error');
+		//修改窗口地区选择如果有改变，移除错误样式
+		$('#areaIdAdd').on('change', function(){
+			$('#areaNameFormGroupAdd').removeClass('has-error');
+		});
+		//修改窗口学校或单位输入框一旦有输入，移除错误样式
+		$('#orgNameEdit').on('keydown', function(){
+			$('#orgNameFormGroupEdit').removeClass('has-error');
 		});
 	});
 	//提示
@@ -258,14 +303,22 @@
 	}
 	//修改
 	function edit(id) {
-		$.post('${pageContext.request.contextPath}/area/getArea.do',{"area.id":id},function(result){
+		$.post('${pageContext.request.contextPath}/org/getOrg.do',{"org.id":id},function(result){
 			if(result.indexOf('<html')==-1) {
 				var r = eval('('+result+')');
-				$('#areaNameEdit').val(r.name);
-				$('#areaIdEdit').val(r.id);
-				$('#editarea').modal('show');
+				$('#orgNameEdit').val(r.name);
+				$('#orgIdEdit').val(r.id);
+				//地区选择定位
+				var options = $('#areaIdEdit option');
+				for(var i=0;i<options.length;i++) {
+					if(options[i].value==r.areaId) {
+						$(options[i]).attr('selected','selected');
+						break;
+					}
+				}
+				$('#editorg').modal('show');
 			} else {
-				tips('错误', '根据id获取地区信息出错');
+				tips('错误', '根据id获取学校或单位信息出错');
 			}
 		});
 	}
@@ -279,25 +332,25 @@
 	}
 	//页码跳转
 	function toPage(page) {
-		window.location.href='${pageContext.request.contextPath}/area/listArea.do?page='+page+'&name='+$.trim($('#areaName').val());
+		window.location.href='${pageContext.request.contextPath}/org/listOrg.do?page='+page+'&name='+$.trim($('#orgName').val());
 	}
 	//上移
 	function moveup(id) {
-		$.post('${pageContext.request.contextPath}/area/moveupArea.do',{"area.id":id,"name":$.trim($('#areaName').val())},function(result){
+		$.post('${pageContext.request.contextPath}/org/moveupOrg.do',{"org.id":id,"name":$.trim($('#orgName').val())},function(result){
 			if(result.indexOf('<html')==-1) {
 				toPage('${page}');
 			} else {
-				tips('错误', '上移地区出错');
+				tips('错误', '上移学校或单位出错');
 			}
 		});
 	}
 	//下移
 	function movedown(id) {
-		$.post('${pageContext.request.contextPath}/area/movedownArea.do',{"area.id":id,"name":$.trim($('#areaName').val())},function(result){
+		$.post('${pageContext.request.contextPath}/org/movedownOrg.do',{"org.id":id,"name":$.trim($('#orgName').val())},function(result){
 			if(result.indexOf('<html')==-1) {
 				toPage('${page}');
 			} else {
-				tips('错误', '下移地区出错');
+				tips('错误', '下移学校或单位出错');
 			}
 		});
 	}
