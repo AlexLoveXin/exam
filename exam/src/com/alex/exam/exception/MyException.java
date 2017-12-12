@@ -10,6 +10,11 @@ public class MyException extends Exception {
 	public static final String ERROR_CODE_1 = "1";
 	public static final String ERROR_CODE_2 = "2";
 	public static final String ERROR_CODE_3 = "3";
+	public static final String ERROR_CODE_4 = "4";
+	public static final String ERROR_CODE_5 = "5";
+	public static final String ERROR_CODE_6 = "6";
+	public static final String ERROR_CODE_7 = "7";
+	public static final String ERROR_CODE_8 = "8";
 	private String errorCode;                    //自定义错误代码
 	private String errorMsg;                     //自定义错误信息
 	public MyException(String errorCode, String errorMsg) {

@@ -17,6 +17,29 @@
 <link rel="stylesheet" type="text/css" href="../css/exam.css">
 </head>
 <body>
+<!-- 删除数据form -->
+<form id="delform" action="${pageContext.request.contextPath }/area/delArea.do" method="post">
+	<input type="hidden" name="area.id" id="delid">
+</form>
+<!-- 删除确认弹出框 -->
+<div class="modal fade in" id="confirm" role="dialog" tabindex="-1" aria-labelledby="删除确认窗口">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="关闭">&times;</button>
+                <h4 class="modal-title">删除确认<span class="sr-only">删除确认</span></h4>
+            </div>
+            <div class="modal-body">
+                <p>确认要删除吗？</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" aria-label="否">否</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="是" onclick="del();">是</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 提示框 -->
 <div id="popover" class="popover" role="tooltip" aria-labelledby="提示">
     <div class="arrow"></div>
     <h3 class="popover-title">
@@ -35,7 +58,7 @@
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" id="addform" method="post" action="${pageContext.request.contextPath }/area/addArea.do">
-                    <div class="form-group" id="areaNameFormGroup">
+                    <div class="form-group" id="areaNameFormGroupAdd">
                         <label class="control-label col-md-2 col-sm-2" for="areaNameAdd">地区名称</label>
                         <div class="col-md-10">
                             <input type="text" class="form-control" name="area.name" placeholder="地区名称" id="areaNameAdd">
@@ -60,11 +83,13 @@
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" id="editform" method="post" action="${pageContext.request.contextPath }/area/editArea.do">
-                    <div class="form-group" id="areaNameFormGroup">
+                    <div class="form-group" id="areaNameFormGroupEdit">
                         <label class="control-label col-md-2 col-sm-2" for="areaNameAdd">地区名称</label>
                         <div class="col-md-10">
                             <input type="text" class="form-control" name="area.name" placeholder="地区名称" id="areaNameEdit">
                             <input type="hidden" name="area.id" id="areaIdEdit">
+                            <input type="hidden" name="page" value="${page }">
+                            <input type="hidden" name="name" value="${name }">
                         </div>
                     </div>
                 </form>
@@ -88,7 +113,7 @@
             <form class="form-inline" id="searchform" method="post" action="${pageContext.request.contextPath }/area/listArea.do">
                 <div class="form-group">
                     <label class="sr-only" for="areaName">地区名称</label>
-                    <input type="text" class="form-control" name="area.name" placeholder="地区名称" id="areaName" value="${area.name }">
+                    <input type="text" class="form-control" name="name" placeholder="地区名称" id="areaName" value="${name }">
                 </div>
                 <button type="button" class="btn btn-default" id="searchbtn">搜索<span class="sr-only">搜索</span></button>
                 <button type="button" class="btn btn-default" data-toggle="modal" data-target="#addarea">新增<span class="sr-only">新增</span></button>
@@ -106,9 +131,9 @@
                     		<td>${obj.name }</td>
                     		<td>${obj.orderby }</td>
                     		<td width="30%">
-                    			<button type="button" class="btn btn-xs btn-default">上移<span class="sr-only">上移</span></button>&nbsp;
-                    			<button type="button" class="btn btn-xs btn-default">下移<span class="sr-only">下移</span></button>&nbsp;
-                    			<button type="button" class="btn btn-xs btn-default">删除<span class="sr-only">删除</span></button>&nbsp;
+                    			<button type="button" class="btn btn-xs btn-default" onclick="moveup('${obj.id}');">上移<span class="sr-only">上移</span></button>&nbsp;
+                    			<button type="button" class="btn btn-xs btn-default" onclick="movedown('${obj.id}');">下移<span class="sr-only">下移</span></button>&nbsp;
+                    			<button type="button" class="btn btn-xs btn-default" onclick="delconfirm('${obj.id}');">删除<span class="sr-only">删除</span></button>&nbsp;
                     			<button type="button" class="btn btn-xs btn-default" onclick="edit('${obj.id}');">修改<span class="sr-only">修改</span></button>
                     		</td>
                     	</tr>
@@ -148,67 +173,133 @@
 <script type="text/javascript" src="../bootstrap/js/jquery-1.9.1.js"></script>
 <script type="text/javascript">
 	$(function(){
-		//保存按钮点击事件
+		//新增窗口保存按钮点击事件
 		$('#savebtn').on('click', function(){
 			if($.trim($('#areaNameAdd').val())!=''){//地区名称不为空
 				//检查地区名称是否在数据库中存在
 				$.post('${pageContext.request.contextPath}/area/checkNameArea.do',{"area.name":$.trim($('#areaNameAdd').val())},function(result){
-					var r = eval('('+result+')');
-					if(r.exist) {
-						//弹出提示
-						$('#popover .popovertitle').html('提示');
-				        $('#popover .popover-content').html('地区名称'+$.trim($('#areaNameAdd').val())+'在系统中已存在');
-				        $('#popover').show();
-				        setTimeout(function () {
-				        	$('#popover').hide();
-				        }, 5000);
-				        $('#closepopover').on('click', function() {
-				        	$('#popover').hide();
-				        });
-				        //地区名称输入框加上错误样式
-				        $('#areaNameFormGroup').addClass('has-error');
+					if(result.indexOf('<html')==-1) {
+						var r = eval('('+result+')');
+						if(r.exist) {
+							//弹出提示
+							tips('提示', '地区名称'+$.trim($('#areaNameEdit').val())+'在系统中已存在');
+					        //地区名称输入框加上错误样式
+					        $('#areaNameFormGroupAdd').addClass('has-error');
+						} else {
+							$('#areaNameAdd').val($.trim($('#areaNameAdd').val()));
+							$('#addform').submit();
+							$('#addarea').modal('hide');
+						}
 					} else {
-						$('#areaNameAdd').val($.trim($('#areaNameAdd').val()));
-						$('#addform').submit();
-						$('#addarea').modal('hide');
+						tips('错误', '检查地区名称是否存在出错');
 					}
 				});
 			} else {//地区名称为空
 				//弹出提示
-				$('#popover .popovertitle').html('提示');
-		        $('#popover .popover-content').html('地区名称为必填项');
-		        $('#popover').show();
-		        setTimeout(function () {
-		        	$('#popover').hide();
-		        }, 5000);
-		        $('#closepopover').on('click', function() {
-		        	$('#popover').hide();
-		        });
+				tips('提示', '地区名称为必填项');
 		        //地区名称输入框加上错误样式
-		        $('#areaNameFormGroup').addClass('has-error');
+		        $('#areaNameFormGroupAdd').addClass('has-error');
 				return;
 			}
 		});
-		//地区输入框一旦有输入，移除错误样式
+		//新增窗口地区输入框一旦有输入，移除错误样式
 		$('#areaNameAdd').on('keydown', function(){
-			$('#areaNameFormGroup').removeClass('has-error');
+			$('#areaNameFormGroupAdd').removeClass('has-error');
 		});
 		//查询按钮点击事件
 		$('#searchbtn').on('click', function(){
 			$('#searchform').submit();
 		});
+		//修改窗口保存按钮点击事件
+		$('#editbtn').on('click', function(){
+			if($.trim($('#areaNameEdit').val())!=''){//地区名称不为空
+				//检查地区名称是否在数据库中存在
+				$.post('${pageContext.request.contextPath}/area/checkNameArea.do',{"area.name":$.trim($('#areaNameEdit').val())},function(result){
+					if(result.indexOf('<html')==-1) {
+						var r = eval('('+result+')');
+						if(r.exist) {
+							//弹出提示
+					        tips('提示', '地区名称'+$.trim($('#areaNameEdit').val())+'在系统中已存在');
+					        //地区名称输入框加上错误样式
+					        $('#areaNameFormGroupEdit').addClass('has-error');
+						} else {
+							$('#areaNameEdit').val($.trim($('#areaNameEdit').val()));
+							$('#editform').submit();
+							$('#editarea').modal('hide');
+						}
+					} else {
+						tips('错误', '检查地区名称是否存在出错');
+					}
+				});
+			} else {//地区名称为空
+				//弹出提示
+		        tips('提示', '地区名称为必填项');
+		        //地区名称输入框加上错误样式
+		        $('#areaNameFormGroupEdit').addClass('has-error');
+				return;
+			}
+		});
+		//修改窗口地区输入框一旦有输入，移除错误样式
+		$('#areaNameEdit').on('keydown', function(){
+			$('#areaNameFormGroupEdit').removeClass('has-error');
+		});
 	});
+	//提示
+	function tips(title, msg) {
+		$('#popover .popovertitle').html(title);
+        $('#popover .popover-content').html(msg);
+        $('#popover').show();
+        setTimeout(function () {
+        	$('#popover').hide();
+        }, 5000);
+        $('#closepopover').on('click', function() {
+        	$('#popover').hide();
+        });
+	}
 	//修改
 	function edit(id) {
 		$.post('${pageContext.request.contextPath}/area/getArea.do',{"area.id":id},function(result){
-			var r = eval('('+result+')');
-			$('#areaNameEdit').val(r.name);
-			$('#areaIdEdit').val(r.id);
+			if(result.indexOf('<html')==-1) {
+				var r = eval('('+result+')');
+				$('#areaNameEdit').val(r.name);
+				$('#areaIdEdit').val(r.id);
+				$('#editarea').modal('show');
+			} else {
+				tips('错误', '根据id获取地区信息出错');
+			}
 		});
+	}
+	//删除
+	function delconfirm(id) {
+		$('#confirm').modal('show');
+		$('#delid').val(id);
+	}
+	function del() {
+		$('#delform').submit();
 	}
 	//页码跳转
 	function toPage(page) {
-		window.location.href='${pageContext.request.contextPath}/area/listArea.do?page='+page+'&area.name='+$.trim($('#areaName').val());
+		window.location.href='${pageContext.request.contextPath}/area/listArea.do?page='+page+'&name='+$.trim($('#areaName').val());
+	}
+	//上移
+	function moveup(id) {
+		$.post('${pageContext.request.contextPath}/area/moveupArea.do',{"area.id":id,"name":$.trim($('#areaName').val())},function(result){
+			if(result.indexOf('<html')==-1) {
+				toPage('${page}');
+			} else {
+				tips('错误', '上移地区出错');
+			}
+		});
+	}
+	//下移
+	function movedown(id) {
+		$.post('${pageContext.request.contextPath}/area/movedownArea.do',{"area.id":id,"name":$.trim($('#areaName').val())},function(result){
+			if(result.indexOf('<html')==-1) {
+				toPage('${page}');
+			} else {
+				tips('错误', '下移地区出错');
+			}
+		});
 	}
 </script>
 <script type="text/javascript" src="../bootstrap/js/bootstrap.js"></script>

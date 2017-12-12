@@ -59,6 +59,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 			<tx:method name="delete*"/>
 			<tx:method name="update*"/>
 			<tx:method name="edit*"/>
+			<tx:method name="move*"/>
 			<!-- 匹配以上的方法将使用事务，其余方法不使用事务 -->
 			<tx:method name="*" read-only="true"/>
 		</tx:attributes>
