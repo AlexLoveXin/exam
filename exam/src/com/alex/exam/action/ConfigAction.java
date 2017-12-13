@@ -113,7 +113,7 @@ public class ConfigAction extends BaseAction {
 			if(null!=config && config.getId()!=0) {
 				Config config2 = configService.get(config.getId());
 				if(null!=config2) {
-					sb.append("\"id\":"+config2.getId()).append(",\"key\":\""+config2.getKey()+"\"").append(",\"title\":"+config2.getTitle()).append(",\"value\":"+config2.getValue()).append(",\"valuetype\":"+config2.getValuetype()).append(",\"condition\":"+config2.getCondition()).append(",\"type\":"+config2.getType()).append(",\"orderby\":"+config2.getOrderby());
+					sb.append("\"id\":"+config2.getId()).append(",\"key\":\""+config2.getKey()+"\"").append(",\"title\":\""+config2.getTitle()+"\"").append(",\"value\":\""+config2.getValue()+"\"").append(",\"valuetype\":\""+config2.getValuetype()+"\"").append(",\"condition\":\""+config2.getCondition()+"\"").append(",\"type\":\""+config2.getType()+"\"").append(",\"orderby\":"+config2.getOrderby());
 				}
 			}
 			sb.append("}");
@@ -127,8 +127,8 @@ public class ConfigAction extends BaseAction {
 		try {
 			if(null!=config && config.getId()!=0 && StringUtils.isNotBlank(config.getKey().trim()) && StringUtils.isNotBlank(config.getTitle().trim()) && StringUtils.isNotBlank(config.getValue().trim())) {
 				Config config2 = configService.get(config.getId());
-				config2.setTitle(config.getTitle());
-				config2.setValue(config.getValue());
+				config2.setTitle(config.getTitle().trim());
+				config2.setValue(config.getValue().trim());
 				configService.update(config2);
 				//缓存中替换掉
 				Init.getConfig().put(config2.getKey(), config2);
@@ -178,8 +178,8 @@ public class ConfigAction extends BaseAction {
 		try {
 			if(null!=config && config.getId()!=0 && StringUtils.isNotBlank(config.getKey().trim()) && StringUtils.isNotBlank(config.getTitle().trim()) && StringUtils.isNotBlank(config.getValue().trim())) {
 				Config config2 = configService.get(config.getId());
-				config2.setTitle(config.getTitle());
-				config2.setValue(config.getValue());
+				config2.setTitle(config.getTitle().trim());
+				config2.setValue(config.getValue().trim());
 				configService.update(config2);
 				//缓存中替换掉
 				Init.getConfig().put(config2.getKey(), config2);
@@ -228,8 +228,8 @@ public class ConfigAction extends BaseAction {
 		try {
 			if(null!=config && config.getId()!=0 && StringUtils.isNotBlank(config.getKey().trim()) && StringUtils.isNotBlank(config.getTitle().trim()) && StringUtils.isNotBlank(config.getCondition().trim())) {
 				Config config2 = configService.get(config.getId());
-				config2.setTitle(config.getTitle());
-				config2.setCondition(config.getCondition());
+				config2.setTitle(config.getTitle().trim());
+				config2.setCondition(config.getCondition().trim());
 				configService.update(config2);
 				//缓存中替换掉
 				Init.getConfig().put(config2.getKey(), config2);
@@ -273,5 +273,77 @@ public class ConfigAction extends BaseAction {
 			throw new MyException(MyException.ERROR_CODE_2, "查询地区列表出错");
 		}
 		return "dates";
+	}
+	public String scores() throws MyException {
+		try {
+			HashMap<String, Config> configs = Init.getConfig();
+			list = new ArrayList<>();
+			Set<String> keys = configs.keySet();
+			for (String key : keys) {
+				if(key.indexOf("SCORES")!=-1) {
+					list.add(configs.get(key));
+				}
+			}
+			logger.debug("list size=="+list.size());
+		} catch (Exception e) {
+			logger.error("Area list error! "+MyException.position(e)+" errorCode:"+MyException.ERROR_CODE_2, e);
+			throw new MyException(MyException.ERROR_CODE_2, "查询地区列表出错");
+		}
+		return "scores";
+	}
+	public String scoreadd() throws MyException {
+		try {
+			if(null!=config && StringUtils.isNotBlank(config.getKey()) && StringUtils.isNotBlank(config.getCondition()) && StringUtils.isNotBlank(config.getTitle()) && StringUtils.isNotBlank(config.getType()) && StringUtils.isNotBlank(config.getValue())) {
+				config.setKey(config.getKey().trim());
+				config.setTitle(config.getTitle().trim());
+				config.setCondition(config.getCondition().trim());
+				config.setType(config.getType().trim());
+				config.setValue(config.getValue().trim());
+				int maxOrderby = configService.getMaxOrderby();
+				logger.debug("maxOrderby=="+maxOrderby);
+				Config config2 = new Config();
+				BeanUtils.copyProperties(config, config2, new String[]{"id", "valuetype", "orderby"});
+				config2.setOrderby(maxOrderby);
+				config2.setValuetype("Integer");
+				configService.save(config2);
+				//将配置加到缓存中
+				Init.getConfig().put(config2.getKey(), config2);
+			}
+		} catch (Exception e) {
+			logger.error("Area add error! "+MyException.position(e)+" errorCode:"+MyException.ERROR_CODE_1, e);
+			throw new MyException(MyException.ERROR_CODE_1, "保存地区信息出错");
+		}
+		return "toscores";
+	}
+	public String scoreedit() throws MyException {
+		try {
+			if(null!=config && config.getId()!=0 && StringUtils.isNotBlank(config.getKey().trim()) && StringUtils.isNotBlank(config.getTitle().trim()) && StringUtils.isNotBlank(config.getCondition().trim()) && StringUtils.isNotBlank(config.getType().trim()) && StringUtils.isNotBlank(config.getValue())) {
+				Config config2 = configService.get(config.getId());
+				config2.setTitle(config.getTitle().trim());
+				config2.setCondition(config.getCondition().trim());
+				config2.setType(config.getType().trim());
+				config2.setValue(config.getValue().trim());
+				configService.update(config2);
+				//缓存中替换掉
+				Init.getConfig().put(config2.getKey(), config2);
+			}
+		} catch (Exception e) {
+			logger.error("area edit error! "+MyException.position(e)+" errorCode:"+MyException.ERROR_CODE_5, e);
+			throw new MyException(MyException.ERROR_CODE_5, "修改地区信息出错");
+		}
+		return "toscores";
+	}
+	public String scoredel() throws MyException {
+		try {
+			if(null!=config && config.getId()!=0 && StringUtils.isNotBlank(config.getKey())) {
+				configService.delete(config.getId());
+				//在缓存中移除
+				Init.getConfig().remove(config.getKey().trim());
+			}
+		} catch (Exception e) {
+			logger.error("area delete error! "+MyException.position(e)+" errorCode:"+MyException.ERROR_CODE_6, e);
+			throw new MyException(MyException.ERROR_CODE_6, "删除地区信息出错");
+		}
+		return "toscores";
 	}
 }

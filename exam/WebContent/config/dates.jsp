@@ -131,10 +131,10 @@
                             <input type="text" class="form-control" name="config.title" placeholder="描述" id="dateedittitle">
                         </div>
                     </div>
-                    <div class="form-group" id="dateeditvalueFormGroup">
-                        <label class="control-label col-md-2 col-sm-2" for="dateeditvalue">值</label>
+                    <div class="form-group" id="dateeditconditionFormGroup">
+                        <label class="control-label col-md-2 col-sm-2" for="dateeditcondition">值</label>
                         <div class="col-md-10">
-                            <input type="text" class="form-control" name="config.value" placeholder="值" id="dateeditvalue">
+                            <input type="text" class="form-control" name="config.condition" placeholder="值" id="dateeditcondition">
                         </div>
                     </div>
                 </form>
@@ -229,6 +229,7 @@
     	<div class="col-md-10 col-md-offset-2 col-sm-10 col-sm-offset-2 main">
             <h3 class="page-header">届数<span class="sr-only">届数</span></h3>
             <button type="button" class="btn btn-default" data-toggle="modal" data-target="#jieaddmodal">新增<span class="sr-only">新增</span></button>
+            <br><br>
             <div class="table-responsive">
                 <table class="table table-bordered table-striped table-hover">
                     <thead>
@@ -250,6 +251,7 @@
             </div>
             <h3 class="page-header">日期配置<span class="sr-only">日期配置</span></h3>
             <button type="button" class="btn btn-default" data-toggle="modal" data-target="#dateaddmodal">新增<span class="sr-only">新增</span></button>
+            <br><br>
             <div class="table-responsive">
                 <table class="table table-bordered table-striped table-hover">
                     <thead>
@@ -259,8 +261,8 @@
                     	<c:forEach items="${dates }" var="obj" varStatus="vstatus">
                     	<tr>
                     		<td>${obj.title }</td>
-                    		<td>${fn:substring(obj.condition,0,fn:indexOf("|")) }</td>
-                    		<td>${fn:substring(obj.condition,fn:indexOf("|")+1,fn:length(obj.condition)) }</td>
+                    		<td>${fn:substring(obj.condition,0,fn:indexOf(obj.condition,"|")) }</td>
+                    		<td>${fn:substring(obj.condition,fn:indexOf(obj.condition,"|")+1,fn:length(obj.condition)) }</td>
                     		<td>
                     			<button type="button" class="btn btn-xs btn-default" onclick="datedelconfirm('${obj.id}','${obj.key }');">删除<span class="sr-only">删除</span></button>&nbsp;
                     			<button type="button" class="btn btn-xs btn-default" onclick="dateedit('${obj.id}');">修改<span class="sr-only">修改</span></button>
@@ -304,6 +306,12 @@
 					        //输入框加上错误样式
 					        $('#jieaddkeyFormGroup').addClass('has-error');
 					        return;
+						} else {
+							$('#jieaddkey').val($.trim($('#jieaddkey').val()));
+							$('#jieaddvalue').val($.trim($('#jieaddvalue').val()));
+							$('#jieaddtitle').val($.trim($('#jieaddtitle').val()));
+							$('#jieaddform').submit();
+							$('#jieaddmodal').modal('hide');
 						}
 					} else {
 						tips('错误', '检查键是否存在出错');
@@ -317,11 +325,6 @@
 		        $('#jieaddkeyFormGroup').addClass('has-error');
 				return;
 			}
-			$('#jieaddkey').val($.trim($('#jieaddkey').val()));
-			$('#jieaddvalue').val($.trim($('#jieaddvalue').val()));
-			$('#jieaddtitle').val($.trim($('#jieaddtitle').val()));
-			$('#jieaddform').submit();
-			$('#jieaddmodal').modal('hide');
 		});
 		//新增窗口输入框一旦有输入，移除错误样式
 		$('#jieaddkey').on('keydown', function(){
@@ -460,6 +463,21 @@
 				$('#jieeditvalue').val(r.value);
 				$('#jieedittitle').val(r.title);
 				$('#jieeditmodal').modal('show');
+			} else {
+				tips('错误', '根据id获取信息出错');
+			}
+		});
+	}
+	//修改
+	function dateedit(id) {
+		$.post('${pageContext.request.contextPath}/config/getConfig.do',{"config.id":id},function(result){
+			if(result.indexOf('<html')==-1) {
+				var r = eval('('+result+')');
+				$('#dateeditkey').val(r.key);
+				$('#dateeditid').val(r.id);
+				$('#dateeditcondition').val(r.condition);
+				$('#dateedittitle').val(r.title);
+				$('#dateeditmodal').modal('show');
 			} else {
 				tips('错误', '根据id获取信息出错');
 			}

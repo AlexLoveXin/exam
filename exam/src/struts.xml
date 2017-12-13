@@ -50,9 +50,11 @@
 		<action name="*Config" class="configAction" method="{1}">
 			<result name="times">/config/times.jsp</result>
 			<result name="dates">/config/dates.jsp</result>
-			<result name="totimes">timesConfig.do</result>
-			<result name="todates">datesConfig.do</result>
-			<allowed-methods>dates,dateadd,dateedit,daatedel,jieedit,jieadd,timedel,timeedit,times,timeadd,checkKey,get</allowed-methods><!-- 使用通配符的请求，方法必须在此处添加上 -->
+			<result name="scores">/config/scores.jsp</result>
+			<result name="totimes" type="redirectAction">timesConfig.do</result>
+			<result name="todates" type="redirectAction">datesConfig.do</result>
+			<result name="toscores" type="redirectAction">scoresConfig.do</result>
+			<allowed-methods>dates,dateadd,dateedit,datedel,jieedit,jieadd,timedel,timeedit,times,timeadd,checkKey,get,scores,scoreedit,scoreadd,scoredel</allowed-methods><!-- 使用通配符的请求，方法必须在此处添加上 -->
 		</action>
 	</package>
 </struts>

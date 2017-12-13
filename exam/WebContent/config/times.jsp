@@ -97,9 +97,9 @@
             <div class="modal-body">
                 <form class="form-horizontal" id="timeeditform" method="post" action="${pageContext.request.contextPath }/config/timeeditConfig.do">
                     <div class="form-group" id="configKeyFormGroupEdit">
-                        <label class="control-label col-md-2 col-sm-2" for="timeeditkeyEdit">键</label>
+                        <label class="control-label col-md-2 col-sm-2" for="timeeditkey">键</label>
                         <div class="col-md-10">
-                            <input type="text" class="form-control" name="config.key" placeholder="键" id="timeeditkeyEdit" readonly="readonly">
+                            <input type="text" class="form-control" name="config.key" placeholder="键" id="timeeditkey" readonly="readonly">
                             <input type="hidden" name="config.id" id="timeeditid">
                         </div>
                     </div>
@@ -134,6 +134,8 @@
     	<div class="col-md-10 col-md-offset-2 col-sm-10 col-sm-offset-2 main">
             <h3 class="page-header">考试次数<span class="sr-only">考试次数</span></h3>
             <button type="button" class="btn btn-default" data-toggle="modal" data-target="#timeaddmodal">新增<span class="sr-only">新增</span></button>
+            <br>
+            <br>
             <div class="table-responsive">
                 <table class="table table-bordered table-striped table-hover">
                     <thead>
@@ -187,6 +189,12 @@
 					        //输入框加上错误样式
 					        $('#timeaddkeyFormGroup').addClass('has-error');
 					        return;
+						} else {
+							$('#timeaddkey').val($.trim($('#timeaddkey').val()));
+							$('#timeaddvalue').val($.trim($('#timeaddvalue').val()));
+							$('#timeaddtitle').val($.trim($('#timeaddtitle').val()));
+							$('#timeaddform').submit();
+							$('#timeaddmodal').modal('hide');
 						}
 					} else {
 						tips('错误', '检查键是否存在出错');
@@ -200,11 +208,6 @@
 		        $('#timeaddkeyFormGroup').addClass('has-error');
 				return;
 			}
-			$('#timeaddkey').val($.trim($('#timeaddkey').val()));
-			$('#timeaddvalue').val($.trim($('#timeaddvalue').val()));
-			$('#timeaddtitle').val($.trim($('#timeaddtitle').val()));
-			$('#timeaddform').submit();
-			$('#timeaddmodal').modal('hide');
 		});
 		//新增窗口输入框一旦有输入，移除错误样式
 		$('#timeaddkey').on('keydown', function(){
@@ -259,7 +262,7 @@
         });
 	}
 	//修改
-	function edit(id) {
+	function timeedit(id) {
 		$.post('${pageContext.request.contextPath}/config/getConfig.do',{"config.id":id},function(result){
 			if(result.indexOf('<html')==-1) {
 				var r = eval('('+result+')');
@@ -275,7 +278,7 @@
 	}
 	//删除
 	function timedelconfirm(id,key) {
-		$('#timeconfirm').modal('show');
+		$('#timedelmodal').modal('show');
 		$('#timedelid').val(id);
 		$('#timedelkey').val(key);
 	}
