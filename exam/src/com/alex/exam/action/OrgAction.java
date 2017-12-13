@@ -44,6 +44,13 @@ public class OrgAction extends BaseAction {
 	public String getName() {
 		return name;
 	}
+	private int areaIdSearch;
+	public void setAreaIdSearch(int areaIdSearch) {
+		this.areaIdSearch = areaIdSearch;
+	}
+	public int getAreaIdSearch() {
+		return areaIdSearch;
+	}
 	//接收新增、修改、删除参数
 	private Organization org;
 	public void setOrg(Organization org) {
@@ -106,6 +113,10 @@ public class OrgAction extends BaseAction {
 			if(StringUtils.isNotBlank(name)) {
 				where += " and name like ? ";
 				params.add("%"+StringUtils.trim(name)+"%");
+			}
+			if(areaIdSearch!=0) {
+				where += " and area.id=? ";
+				params.add(areaIdSearch);
 			}
 			LinkedHashMap<String, String> order = new LinkedHashMap<>();
 			order.put("orderby", "desc");

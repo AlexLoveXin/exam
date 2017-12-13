@@ -35,8 +35,24 @@
 				<param name="actionName">listOrg.do</param>
 				<param name="page">${page}</param>
 				<param name="name">${name}</param>
+				<param name="areaIdSearch">${areaIdSearch}</param>
 			</result>
 			<allowed-methods>list,add,checkName,get,edit,del,moveup,movedown</allowed-methods><!-- 使用通配符的请求，方法必须在此处添加上 -->
+		</action>
+	</package>
+	<package name="config" namespace="/config" extends="struts-default">
+		<global-results>
+			<result name="error">/error.jsp</result>
+		</global-results>
+		<global-exception-mappings>
+			<exception-mapping result="error" exception="com.alex.exam.exception.MyException"></exception-mapping>
+		</global-exception-mappings>
+		<action name="*Config" class="configAction" method="{1}">
+			<result name="times">/config/times.jsp</result>
+			<result name="dates">/config/dates.jsp</result>
+			<result name="totimes">timesConfig.do</result>
+			<result name="todates">datesConfig.do</result>
+			<allowed-methods>dates,dateadd,dateedit,daatedel,jieedit,jieadd,timedel,timeedit,times,timeadd,checkKey,get</allowed-methods><!-- 使用通配符的请求，方法必须在此处添加上 -->
 		</action>
 	</package>
 </struts>

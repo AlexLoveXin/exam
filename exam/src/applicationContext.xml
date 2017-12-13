@@ -77,6 +77,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	</bean>
 	<bean id="areaDao" class="com.alex.exam.dao.impl.AreaDaoImpl" parent="baseDao"></bean>
 	<bean id="orgDao" class="com.alex.exam.dao.impl.OrgDaoImpl" parent="baseDao"></bean>
+	<bean id="configDao" class="com.alex.exam.dao.impl.ConfigDaoImpl" parent="baseDao"></bean>
 	
 	<!-- services -->
 	<bean id="areaService" class="com.alex.exam.service.impl.AreaServiceImpl">
@@ -84,6 +85,9 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	</bean>
 	<bean id="orgService" class="com.alex.exam.service.impl.OrgServiceImpl">
 		<constructor-arg index="0" ref="orgDao"></constructor-arg>
+	</bean>
+	<bean id="configService" class="com.alex.exam.service.impl.ConfigServiceImpl">
+		<constructor-arg index="0" ref="configDao"></constructor-arg>
 	</bean>
 	
 	<!-- actions -->
@@ -93,5 +97,13 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	<bean id="orgAction" class="com.alex.exam.action.OrgAction" scope="prototype">
 		<property name="orgService" ref="orgService"></property>
 		<property name="areaService" ref="areaService"></property>
+	</bean>
+	<bean id="configAction" class="com.alex.exam.action.ConfigAction" scope="prototype">
+		<property name="configService" ref="configService"></property>
+	</bean>
+	
+	
+	<bean id="init" class="com.alex.exam.init.Init" init-method="init">
+		<property name="configService" ref="configService"></property>
 	</bean>
 </beans>

@@ -9,7 +9,7 @@
 		</id>
 		<property name="name" type="string" length="20" column="area_name"></property>
 		<property name="orderby" type="int" length="5" column="area_orderby"></property>
-		<set name="organizations">
+		<set name="organizations" cascade="all">
 			<key column="area_id"></key>
 			<one-to-many class="com.alex.exam.model.Organization"/>
 		</set>

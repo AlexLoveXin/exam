@@ -65,7 +65,7 @@
                         </div>
                     </div>
                     <div class="form-group" id="areaNameFormGroupAdd">
-                        <label class="control-label col-md-3 col-sm-3">地区名称</label>
+                        <label class="control-label col-md-3 col-sm-3" for="areaIdAdd">地区名称</label>
                         <div class="col-md-9">
                             <select id="areaIdAdd" class="form-control" name="areaId">
                             	<option value="0">--请选择--</option>
@@ -101,10 +101,11 @@
                             <input type="hidden" name="org.id" id="orgIdEdit">
                             <input type="hidden" name="page" value="${page }">
                             <input type="hidden" name="name" value="${name }">
+                            <input type="hidden" name="areaIdSearch" value="${areaIdSearch }">
                         </div>
                     </div>
                     <div class="form-group" id="areaNameFormGroupEdit">
-                        <label class="control-label col-md-3 col-sm-3">地区名称</label>
+                        <label class="control-label col-md-3 col-sm-3" for="areaIdEdit">地区名称</label>
                         <div class="col-md-9">
                             <select id="areaIdEdit" class="form-control" name="areaId">
                             	<option value="0">--请选择--</option>
@@ -136,6 +137,15 @@
                 <div class="form-group">
                     <label class="sr-only" for="orgName">学校或单位名称</label>
                     <input type="text" class="form-control" name="name" placeholder="学校或单位名称" id="orgName" value="${name }">
+                </div>
+                <div class="form-group">
+                    <label class="sr-only" for="areaIdSearch">地区</label>
+                    <select id="areaIdSearch" class="form-control" name="areaIdSearch">
+                    	<option value="0">--请选择--</option>
+                    	<c:forEach items="${areas }" var="obj">
+                    	<option value="${obj.id }">${obj.name }</option>
+                    	</c:forEach>
+                    </select>
                 </div>
                 <button type="button" class="btn btn-default" id="searchbtn">搜索<span class="sr-only">搜索</span></button>
                 <button type="button" class="btn btn-default" data-toggle="modal" data-target="#addorg">新增<span class="sr-only">新增</span></button>
@@ -246,7 +256,7 @@
 		});
 		//修改窗口保存按钮点击事件
 		$('#editbtn').on('click', function(){
-			if($('#areaIdAdd').val()==0) {
+			if($('#areaIdEdit').val()==0) {
 				//弹出提示
 				tips('提示', '地区为必选项');
 		        //地区选择加上错误样式
@@ -322,6 +332,17 @@
 			}
 		});
 	}
+	//地区选择定位
+	function positionArea(selectId, idvalue) {
+		var options = $('#'+selectId+' option');
+		for(var i=0;i<options.length;i++) {
+			if(options[i].value==idvalue) {
+				$(options[i]).attr('selected','selected');
+				break;
+			}
+		}
+	}
+	positionArea('areaIdSearch','${areaIdSearch}');
 	//删除
 	function delconfirm(id) {
 		$('#confirm').modal('show');
@@ -332,7 +353,7 @@
 	}
 	//页码跳转
 	function toPage(page) {
-		window.location.href='${pageContext.request.contextPath}/org/listOrg.do?page='+page+'&name='+$.trim($('#orgName').val());
+		window.location.href='${pageContext.request.contextPath}/org/listOrg.do?page='+page+'&name='+$.trim($('#orgName').val())+"&areaIdSearch="+$.trim($('#areaIdSearch').val());
 	}
 	//上移
 	function moveup(id) {

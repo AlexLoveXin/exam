@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.alex.exam.model.Config" table="t_config">
+		<id name="id" type="int" column="config_id">
+			<generator class="native"></generator>
+		</id>
+		<property name="key" type="string" length="50" column="config_key"></property>
+		<property name="title" type="string" length="50" column="config_title"></property>
+		<property name="value" type="string" length="20" column="config_value"></property>
+		<property name="valuetype" type="string" length="20" column="config_valuetype"></property>
+		<property name="condition" type="string" length="100" column="config_condition"></property>
+		<property name="type" type="string" length="5" column="config_type"></property>
+		<property name="orderby" type="int" length="5" column="config_orderby"></property>
+	</class>
+</hibernate-mapping>
