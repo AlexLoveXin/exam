@@ -23,6 +23,24 @@ public class MyException extends Exception {
 	public static final String ERROR_CODE_14 = "14";
 	public static final String ERROR_CODE_15 = "15";
 	public static final String ERROR_CODE_16 = "16";
+	public static final String ERROR_CODE_17 = "17";
+	public static final String ERROR_CODE_18 = "18";
+	public static final String ERROR_CODE_19 = "19";
+	public static final String ERROR_CODE_20 = "20";
+	public static final String ERROR_CODE_21 = "21";
+	public static final String ERROR_CODE_22 = "22";
+	public static final String ERROR_CODE_23 = "23";
+	public static final String ERROR_CODE_24 = "24";
+	public static final String ERROR_CODE_25 = "25";
+	public static final String ERROR_CODE_26 = "26";
+	public static final String ERROR_CODE_27 = "27";
+	public static final String ERROR_CODE_28 = "28";
+	public static final String ERROR_CODE_29 = "29";
+	public static final String ERROR_CODE_30 = "30";
+	public static final String ERROR_CODE_31 = "31";
+	public static final String ERROR_CODE_32 = "32";
+	public static final String ERROR_CODE_33 = "33";
+	public static final String ERROR_CODE_34 = "34";
 	private String errorCode;                    //自定义错误代码
 	private String errorMsg;                     //自定义错误信息
 	public MyException(String errorCode, String errorMsg) {

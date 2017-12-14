@@ -173,6 +173,8 @@
                     		<td>${fn:replace(obj.condition, '|', '-') }</td>
                     		<td>${obj.type }${obj.value }</td>
                     		<td>
+                    			<button type="button" class="btn btn-xs btn-default" onclick="scoremoveup('${obj.id}');">上移<span class="sr-only">上移</span></button>&nbsp;
+                    			<button type="button" class="btn btn-xs btn-default" onclick="scoremovedown('${obj.id}');">下移<span class="sr-only">下移</span></button>&nbsp;
                     			<button type="button" class="btn btn-xs btn-default" onclick="scoredelconfirm('${obj.id}','${obj.key }');">删除<span class="sr-only">删除</span></button>&nbsp;
                     			<button type="button" class="btn btn-xs btn-default" onclick="scoreedit('${obj.id}');">修改<span class="sr-only">修改</span></button>
                     		</td>
@@ -348,6 +350,18 @@
 	}
 	function scoredel() {
 		$('#scoredelform').submit();
+	}
+	//上移
+	function scoremoveup(id) {
+		$.post('${pageContext.request.contextPath}/config/moveupConfig.do',{"type":"score","config.id":id}, function(result) {
+			window.location.href="${pageContext.request.contextPath}/config/scoresConfig.do";
+		});
+	}
+	//下移
+	function scoremovedown(id) {
+		$.post('${pageContext.request.contextPath}/config/movedownConfig.do',{"type":"score","config.id":id}, function(result) {
+			window.location.href="${pageContext.request.contextPath}/config/scoresConfig.do";
+		});
 	}
 </script>
 <script type="text/javascript" src="../bootstrap/js/bootstrap.js"></script>

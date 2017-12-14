@@ -264,6 +264,8 @@
                     		<td>${fn:substring(obj.condition,0,fn:indexOf(obj.condition,"|")) }</td>
                     		<td>${fn:substring(obj.condition,fn:indexOf(obj.condition,"|")+1,fn:length(obj.condition)) }</td>
                     		<td>
+                    			<button type="button" class="btn btn-xs btn-default" onclick="datemoveup('${obj.id}');">上移<span class="sr-only">上移</span></button>&nbsp;
+                    			<button type="button" class="btn btn-xs btn-default" onclick="datemovedown('${obj.id}');">下移<span class="sr-only">下移</span></button>&nbsp;
                     			<button type="button" class="btn btn-xs btn-default" onclick="datedelconfirm('${obj.id}','${obj.key }');">删除<span class="sr-only">删除</span></button>&nbsp;
                     			<button type="button" class="btn btn-xs btn-default" onclick="dateedit('${obj.id}');">修改<span class="sr-only">修改</span></button>
                     		</td>
@@ -499,6 +501,18 @@
 	}
 	function datedel() {
 		$('#datedelform').submit();
+	}
+	//上移
+	function datemoveup(id) {
+		$.post('${pageContext.request.contextPath}/config/moveupConfig.do',{"type":"date","config.id":id}, function(result) {
+			window.location.href="${pageContext.request.contextPath}/config/datesConfig.do";
+		});
+	}
+	//下移
+	function datemovedown(id) {
+		$.post('${pageContext.request.contextPath}/config/movedownConfig.do',{"type":"date","config.id":id}, function(result) {
+			window.location.href="${pageContext.request.contextPath}/config/datesConfig.do";
+		});
 	}
 </script>
 <script type="text/javascript" src="../bootstrap/js/bootstrap.js"></script>

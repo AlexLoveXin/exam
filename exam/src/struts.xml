@@ -54,7 +54,21 @@
 			<result name="totimes" type="redirectAction">timesConfig.do</result>
 			<result name="todates" type="redirectAction">datesConfig.do</result>
 			<result name="toscores" type="redirectAction">scoresConfig.do</result>
-			<allowed-methods>dates,dateadd,dateedit,datedel,jieedit,jieadd,timedel,timeedit,times,timeadd,checkKey,get,scores,scoreedit,scoreadd,scoredel</allowed-methods><!-- 使用通配符的请求，方法必须在此处添加上 -->
+			<allowed-methods>dates,dateadd,dateedit,datedel,jieedit,jieadd,timedel,timeedit,times,timeadd,checkKey,get,scores,scoreedit,scoreadd,scoredel,moveup,movedown</allowed-methods><!-- 使用通配符的请求，方法必须在此处添加上 -->
+		</action>
+	</package>
+	<package name="user" namespace="/user" extends="struts-default">
+		<global-results>
+			<result name="error">/error.jsp</result>
+			<result name="info">/info.jsp</result>
+		</global-results>
+		<global-exception-mappings>
+			<exception-mapping result="error" exception="com.alex.exam.exception.MyException"></exception-mapping>
+		</global-exception-mappings>
+		<action name="*User" class="userAction" method="{1}">
+			<result name="frontloginForm">/user/front_login.jsp</result>
+			<result name="frontregisteForm">/user/front_registe.jsp</result>
+			<allowed-methods>frontregisteForm,frontloginForm,frontlogin</allowed-methods><!-- 使用通配符的请求，方法必须在此处添加上 -->
 		</action>
 	</package>
 </struts>

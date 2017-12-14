@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.alex.exam.model.User" table="t_user">
+		<id name="id" type="int" column="user_id">
+			<generator class="native"></generator>
+		</id>
+		<property name="account" type="string" length="20" column="user_account"></property>
+		<property name="password" type="string" length="32" column="user_password"></property>
+		<property name="unpassword" type="string" length="20" column="user_unpassword"></property>
+		<property name="name" type="string" length="20" column="user_name"></property>
+		<property name="sex" type="string" length="5" column="user_sex"></property>
+		<property name="mobile" type="string" length="20" column="user_mobile"></property>
+		<property name="idcard" type="string" length="20" column="user_idcard"></property>
+		<property name="birthday" type="date" column="user_birthday"></property>
+		<property name="type" type="string" length="10" column="user_type"></property>
+		<property name="jie" type="string" length="5" column="user_jie"></property>
+		<property name="orderby" type="int" length="10" column="user_orderby"></property>
+		<property name="registedate" type="timestamp" column="user_registedate"></property>
+		<many-to-one name="org" class="com.alex.exam.model.Organization" column="org_id"></many-to-one>
+	</class>
+</hibernate-mapping>

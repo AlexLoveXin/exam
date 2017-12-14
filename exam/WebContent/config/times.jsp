@@ -147,6 +147,8 @@
                     		<td>${obj.title }</td>
                     		<td>${obj.value }</td>
                     		<td>
+                    			<button type="button" class="btn btn-xs btn-default" onclick="timemoveup('${obj.id}');">上移<span class="sr-only">上移</span></button>&nbsp;
+                    			<button type="button" class="btn btn-xs btn-default" onclick="timemovedown('${obj.id}');">下移<span class="sr-only">下移</span></button>&nbsp;
                     			<button type="button" class="btn btn-xs btn-default" onclick="timedelconfirm('${obj.id}','${obj.key }');">删除<span class="sr-only">删除</span></button>&nbsp;
                     			<button type="button" class="btn btn-xs btn-default" onclick="timeedit('${obj.id}');">修改<span class="sr-only">修改</span></button>
                     		</td>
@@ -284,6 +286,18 @@
 	}
 	function timedel() {
 		$('#timedelform').submit();
+	}
+	//上移
+	function timemoveup(id) {
+		$.post('${pageContext.request.contextPath}/config/moveupConfig.do',{"type":"time","config.id":id}, function(result) {
+			window.location.href="${pageContext.request.contextPath}/config/timesConfig.do";
+		});
+	}
+	//下移
+	function timemovedown(id) {
+		$.post('${pageContext.request.contextPath}/config/movedownConfig.do',{"type":"time","config.id":id}, function(result) {
+			window.location.href="${pageContext.request.contextPath}/config/timesConfig.do";
+		});
 	}
 </script>
 <script type="text/javascript" src="../bootstrap/js/bootstrap.js"></script>

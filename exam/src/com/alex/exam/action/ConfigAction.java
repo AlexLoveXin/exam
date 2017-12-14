@@ -2,6 +2,7 @@ package com.alex.exam.action;
 
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -54,10 +55,19 @@ public class ConfigAction extends BaseAction {
 					list.add(configs.get(key));
 				}
 			}
+			if(list.size()>0) {
+				list.sort(new Comparator<Config>() {
+
+					@Override
+					public int compare(Config conf1, Config conf2) {
+						return conf2.getOrderby()-conf1.getOrderby();
+					}
+				});
+			}
 			logger.debug("list size=="+list.size());
 		} catch (Exception e) {
-			logger.error("Area list error! "+MyException.position(e)+" errorCode:"+MyException.ERROR_CODE_2, e);
-			throw new MyException(MyException.ERROR_CODE_2, "查询地区列表出错");
+			logger.error("time list error! "+MyException.position(e)+" errorCode:"+MyException.ERROR_CODE_17, e);
+			throw new MyException(MyException.ERROR_CODE_17, "查询考试次数出错");
 		}
 		return "times";
 	}
@@ -78,8 +88,8 @@ public class ConfigAction extends BaseAction {
 				Init.getConfig().put(config2.getKey(), config2);
 			}
 		} catch (Exception e) {
-			logger.error("Area add error! "+MyException.position(e)+" errorCode:"+MyException.ERROR_CODE_1, e);
-			throw new MyException(MyException.ERROR_CODE_1, "保存地区信息出错");
+			logger.error("time config add error! "+MyException.position(e)+" errorCode:"+MyException.ERROR_CODE_18, e);
+			throw new MyException(MyException.ERROR_CODE_18, "新增考试次数配置出错");
 		}
 		return "totimes";
 	}
@@ -102,8 +112,8 @@ public class ConfigAction extends BaseAction {
 			sb.append("}");
 			printJson(sb.toString());
 		} catch (Exception e) {
-			logger.error("check area name error! "+MyException.position(e)+" errorCode:"+MyException.ERROR_CODE_3, e);
-			throw new MyException(MyException.ERROR_CODE_3, "检查地区名称是否存在出错");
+			logger.error("check config key error! "+MyException.position(e)+" errorCode:"+MyException.ERROR_CODE_19, e);
+			throw new MyException(MyException.ERROR_CODE_19, "检查配置key是否存在出错");
 		}
 	}
 	public void get() throws MyException {
@@ -119,8 +129,8 @@ public class ConfigAction extends BaseAction {
 			sb.append("}");
 			printJson(sb.toString());
 		} catch (Exception e) {
-			logger.error("area get by id error! "+MyException.position(e)+" errorCode:"+MyException.ERROR_CODE_4, e);
-			throw new MyException(MyException.ERROR_CODE_4, "根据id获取地区信息出错");
+			logger.error("config get by id error! "+MyException.position(e)+" errorCode:"+MyException.ERROR_CODE_20, e);
+			throw new MyException(MyException.ERROR_CODE_20, "根据id获取配置信息出错");
 		}
 	}
 	public String timeedit() throws MyException {
@@ -134,8 +144,8 @@ public class ConfigAction extends BaseAction {
 				Init.getConfig().put(config2.getKey(), config2);
 			}
 		} catch (Exception e) {
-			logger.error("area edit error! "+MyException.position(e)+" errorCode:"+MyException.ERROR_CODE_5, e);
-			throw new MyException(MyException.ERROR_CODE_5, "修改地区信息出错");
+			logger.error("time config edit error! "+MyException.position(e)+" errorCode:"+MyException.ERROR_CODE_21, e);
+			throw new MyException(MyException.ERROR_CODE_21, "修改考试次数配置出错");
 		}
 		return "totimes";
 	}
@@ -147,8 +157,8 @@ public class ConfigAction extends BaseAction {
 				Init.getConfig().remove(config.getKey().trim());
 			}
 		} catch (Exception e) {
-			logger.error("area delete error! "+MyException.position(e)+" errorCode:"+MyException.ERROR_CODE_6, e);
-			throw new MyException(MyException.ERROR_CODE_6, "删除地区信息出错");
+			logger.error("time config delete error! "+MyException.position(e)+" errorCode:"+MyException.ERROR_CODE_22, e);
+			throw new MyException(MyException.ERROR_CODE_22, "删除考试次数配置出错");
 		}
 		return "totimes";
 	}
@@ -169,8 +179,8 @@ public class ConfigAction extends BaseAction {
 				Init.getConfig().put(config2.getKey(), config2);
 			}
 		} catch (Exception e) {
-			logger.error("Area add error! "+MyException.position(e)+" errorCode:"+MyException.ERROR_CODE_1, e);
-			throw new MyException(MyException.ERROR_CODE_1, "保存地区信息出错");
+			logger.error("jie config add error! "+MyException.position(e)+" errorCode:"+MyException.ERROR_CODE_23, e);
+			throw new MyException(MyException.ERROR_CODE_23, "新增届配置出错");
 		}
 		return "todates";
 	}
@@ -185,8 +195,8 @@ public class ConfigAction extends BaseAction {
 				Init.getConfig().put(config2.getKey(), config2);
 			}
 		} catch (Exception e) {
-			logger.error("area edit error! "+MyException.position(e)+" errorCode:"+MyException.ERROR_CODE_5, e);
-			throw new MyException(MyException.ERROR_CODE_5, "修改地区信息出错");
+			logger.error("jie config edit error! "+MyException.position(e)+" errorCode:"+MyException.ERROR_CODE_24, e);
+			throw new MyException(MyException.ERROR_CODE_24, "修改届配置出错");
 		}
 		return "todates";
 	}
@@ -198,8 +208,8 @@ public class ConfigAction extends BaseAction {
 				Init.getConfig().remove(config.getKey().trim());
 			}
 		} catch (Exception e) {
-			logger.error("area delete error! "+MyException.position(e)+" errorCode:"+MyException.ERROR_CODE_6, e);
-			throw new MyException(MyException.ERROR_CODE_6, "删除地区信息出错");
+			logger.error("date config delete error! "+MyException.position(e)+" errorCode:"+MyException.ERROR_CODE_25, e);
+			throw new MyException(MyException.ERROR_CODE_25, "删除日期配置出错");
 		}
 		return "todates";
 	}
@@ -219,8 +229,8 @@ public class ConfigAction extends BaseAction {
 				Init.getConfig().put(config2.getKey(), config2);
 			}
 		} catch (Exception e) {
-			logger.error("Area add error! "+MyException.position(e)+" errorCode:"+MyException.ERROR_CODE_1, e);
-			throw new MyException(MyException.ERROR_CODE_1, "保存地区信息出错");
+			logger.error("date config add error! "+MyException.position(e)+" errorCode:"+MyException.ERROR_CODE_26, e);
+			throw new MyException(MyException.ERROR_CODE_26, "新增日期配置出错");
 		}
 		return "todates";
 	}
@@ -235,8 +245,8 @@ public class ConfigAction extends BaseAction {
 				Init.getConfig().put(config2.getKey(), config2);
 			}
 		} catch (Exception e) {
-			logger.error("area edit error! "+MyException.position(e)+" errorCode:"+MyException.ERROR_CODE_5, e);
-			throw new MyException(MyException.ERROR_CODE_5, "修改地区信息出错");
+			logger.error("date config edit error! "+MyException.position(e)+" errorCode:"+MyException.ERROR_CODE_27, e);
+			throw new MyException(MyException.ERROR_CODE_27, "修改日期配置出错");
 		}
 		return "todates";
 	}
@@ -267,10 +277,30 @@ public class ConfigAction extends BaseAction {
 					jies.add(configs.get(key));
 				}
 			}
+			if(jies.size()>0) {
+				jies.sort(new Comparator<Config>() {
+
+					@Override
+					public int compare(Config config1, Config config2) {
+						return config2.getOrderby()-config1.getOrderby();
+					}
+					
+				});
+			}
+			if(dates.size()>0) {
+				dates.sort(new Comparator<Config>() {
+
+					@Override
+					public int compare(Config config1, Config config2) {
+						return config2.getOrderby()-config1.getOrderby();
+					}
+					
+				});
+			}
 			logger.debug("dates size=="+dates.size()+"\njies size="+jies.size());
 		} catch (Exception e) {
-			logger.error("Area list error! "+MyException.position(e)+" errorCode:"+MyException.ERROR_CODE_2, e);
-			throw new MyException(MyException.ERROR_CODE_2, "查询地区列表出错");
+			logger.error("date config list error! "+MyException.position(e)+" errorCode:"+MyException.ERROR_CODE_28, e);
+			throw new MyException(MyException.ERROR_CODE_28, "查询日期配置出错");
 		}
 		return "dates";
 	}
@@ -284,10 +314,20 @@ public class ConfigAction extends BaseAction {
 					list.add(configs.get(key));
 				}
 			}
+			if(list.size()>0) {
+				list.sort(new Comparator<Config>() {
+
+					@Override
+					public int compare(Config config1, Config config2) {
+						return config2.getOrderby()-config1.getOrderby();
+					}
+					
+				});
+			}
 			logger.debug("list size=="+list.size());
 		} catch (Exception e) {
-			logger.error("Area list error! "+MyException.position(e)+" errorCode:"+MyException.ERROR_CODE_2, e);
-			throw new MyException(MyException.ERROR_CODE_2, "查询地区列表出错");
+			logger.error("score config list error! "+MyException.position(e)+" errorCode:"+MyException.ERROR_CODE_29, e);
+			throw new MyException(MyException.ERROR_CODE_29, "查询分数配置出错");
 		}
 		return "scores";
 	}
@@ -310,8 +350,8 @@ public class ConfigAction extends BaseAction {
 				Init.getConfig().put(config2.getKey(), config2);
 			}
 		} catch (Exception e) {
-			logger.error("Area add error! "+MyException.position(e)+" errorCode:"+MyException.ERROR_CODE_1, e);
-			throw new MyException(MyException.ERROR_CODE_1, "保存地区信息出错");
+			logger.error("score config add error! "+MyException.position(e)+" errorCode:"+MyException.ERROR_CODE_30, e);
+			throw new MyException(MyException.ERROR_CODE_30, "新增分数配置信息出错");
 		}
 		return "toscores";
 	}
@@ -328,8 +368,8 @@ public class ConfigAction extends BaseAction {
 				Init.getConfig().put(config2.getKey(), config2);
 			}
 		} catch (Exception e) {
-			logger.error("area edit error! "+MyException.position(e)+" errorCode:"+MyException.ERROR_CODE_5, e);
-			throw new MyException(MyException.ERROR_CODE_5, "修改地区信息出错");
+			logger.error("score config edit error! "+MyException.position(e)+" errorCode:"+MyException.ERROR_CODE_31, e);
+			throw new MyException(MyException.ERROR_CODE_31, "修改分数配置信息出错");
 		}
 		return "toscores";
 	}
@@ -341,9 +381,35 @@ public class ConfigAction extends BaseAction {
 				Init.getConfig().remove(config.getKey().trim());
 			}
 		} catch (Exception e) {
-			logger.error("area delete error! "+MyException.position(e)+" errorCode:"+MyException.ERROR_CODE_6, e);
-			throw new MyException(MyException.ERROR_CODE_6, "删除地区信息出错");
+			logger.error("score config delete error! "+MyException.position(e)+" errorCode:"+MyException.ERROR_CODE_32, e);
+			throw new MyException(MyException.ERROR_CODE_32, "删除分数配置信息出错");
 		}
 		return "toscores";
+	}
+	//上移，下移时分辨是次数、日期、分数
+	private String type;
+	public void setType(String type) {
+		this.type = type;
+	}
+	public String getType() {
+		return type;
+	}
+	public void moveup() throws MyException {
+		try {
+			if(null!=config && config.getId()!=0 && StringUtils.isNotBlank(type)) {
+				configService.moveup(config.getId(), type.trim());
+			}
+		} catch (Exception e) {
+			logger.error("config moveup error! "+MyException.position(e)+" errorCode:"+MyException.ERROR_CODE_33, e);
+			throw new MyException(MyException.ERROR_CODE_33, "上移配置出错");
+		}
+	}
+	public void movedown() throws MyException {
+		try {
+			configService.movedown(config.getId(), type.trim());
+		} catch (Exception e) {
+			logger.error("config movedown error! "+MyException.position(e)+" errorCode:"+MyException.ERROR_CODE_34, e);
+			throw new MyException(MyException.ERROR_CODE_34, "下移配置出错");
+		}
 	}
 }
