@@ -108,6 +108,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	<bean id="userAction" class="com.alex.exam.action.UserAction" scope="prototype">
 		<property name="userService" ref="userService"></property>
 		<property name="orgService" ref="orgService"></property>
+		<property name="areaService" ref="areaService"></property>
 	</bean>
 	
 	

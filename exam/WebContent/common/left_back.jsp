@@ -13,4 +13,9 @@
             <ul class="nav nav-sidebar">
                 <li><a href="${pageContext.request.contextPath }/org/listOrg.do">学校或单位<span class="sr-only">学校或单位</span></a></li>
             </ul>
+            <ul class="nav nav-sidebar">
+                <li class="active"><a href="javascript:void(0);" style="text-align: center;cursor: text;">用户管理<span class="sr-only">用户管理</span></a></li>
+                <li><a href="${pageContext.request.contextPath }/user/examlistUser.do">考试用户<span class="sr-only">考试用户</span></a></li>
+                <li><a href="${pageContext.request.contextPath }/user/managelistUser.do">管理用户<span class="sr-only">管理用户</span></a></li>
+            </ul>
         </div>

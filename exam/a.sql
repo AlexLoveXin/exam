@@ -44,6 +44,26 @@ insert into `t_config` (`config_id`, `config_key`, `config_title`, `config_value
 insert into `t_config` (`config_id`, `config_key`, `config_title`, `config_value`, `config_valuetype`, `config_condition`, `config_type`, `config_orderby`) values('19','CS_SCORES_LAST_EXAM_1','初赛网上考试最后一次成绩','60','Integer','55|59','=','36');
 insert into `t_config` (`config_id`, `config_key`, `config_title`, `config_value`, `config_valuetype`, `config_condition`, `config_type`, `config_orderby`) values('20','FS_SCORES_EXAM','复赛网上考试成绩','5','Integer','55|59','+','39');
 
+CREATE TABLE `t_user` (
+  `user_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_account` varchar(20) DEFAULT NULL,
+  `user_password` varchar(32) DEFAULT NULL,
+  `user_unpassword` varchar(20) DEFAULT NULL,
+  `user_name` varchar(20) DEFAULT NULL,
+  `user_sex` varchar(5) DEFAULT NULL,
+  `user_mobile` varchar(20) DEFAULT NULL,
+  `user_idcard` varchar(20) DEFAULT NULL,
+  `user_birthday` date DEFAULT NULL,
+  `user_type` varchar(10) DEFAULT NULL,
+  `user_jie` varchar(5) DEFAULT NULL,
+  `user_orderby` int(10) DEFAULT NULL,
+  `user_registedate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `org_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `unique_user_account` (`user_account`),
+  KEY `foreign_org_id` (`org_id`),
+  CONSTRAINT `foreign_org_id` FOREIGN KEY (`org_id`) REFERENCES `t_organization` (`organization_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
 
 
 

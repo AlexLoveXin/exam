@@ -13,6 +13,8 @@ import org.apache.struts2.ServletActionContext;
  */
 public abstract class BaseAction {
 	public static final int PAGE_SIZE = 10;
+	public static final String EXAM_USERS = "考试用户";
+	public static final String MANAGE_USERS = "管理用户";
 	/**
 	 * 获取HttpServletResponse
 	 * @return

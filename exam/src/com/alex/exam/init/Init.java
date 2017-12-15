@@ -20,6 +20,7 @@ import com.alex.exam.service.ConfigService;
  */
 public class Init {
 	public static final String DATES_REGISTE = "DATES_REGISTE";
+	public static final String JIES = "JIES";
 	private ConfigService configService;
 	public void setConfigService(ConfigService configService) {
 		this.configService = configService;

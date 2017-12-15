@@ -68,7 +68,18 @@
 		<action name="*User" class="userAction" method="{1}">
 			<result name="frontloginForm">/user/front_login.jsp</result>
 			<result name="frontregisteForm">/user/front_registe.jsp</result>
-			<allowed-methods>frontregisteForm,frontloginForm,frontlogin</allowed-methods><!-- 使用通配符的请求，方法必须在此处添加上 -->
+			<result name="frontindex">/front_index.jsp</result>
+			<result name="back_mamagelist">/user/back_mamagelist.jsp</result>
+			<result name="back_examlist">/user/back_examlist.jsp</result>
+			<result name="userexamdel" type="redirectAction">
+				<param name="actionName">examlistUser.do</param>
+				<param name="page">${page}</param>
+				<param name="account">${account}</param>
+				<param name="name">${name}</param>
+				<param name="orgId">${orgId}</param>
+				<param name="jie">${jie}</param>
+			</result>
+			<allowed-methods>frontregisteForm,frontregiste,frontloginForm,frontlogin,checkAccount,examlist,managelist,userexamdel</allowed-methods><!-- 使用通配符的请求，方法必须在此处添加上 -->
 		</action>
 	</package>
 </struts>

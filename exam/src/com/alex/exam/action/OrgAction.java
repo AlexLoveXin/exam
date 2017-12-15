@@ -1,9 +1,4 @@
 package com.alex.exam.action;
-/**
- * 学校或单位action
- * @author Alex
- *
- */
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -20,6 +15,11 @@ import com.alex.exam.model.Organization;
 import com.alex.exam.service.AreaService;
 import com.alex.exam.service.OrgService;
 
+/**
+ * 学校或单位action
+ * @author Alex
+ *
+ */
 public class OrgAction extends BaseAction {
 	private Logger logger = LogManager.getLogger(OrgAction.class);
 	private OrgService orgService;

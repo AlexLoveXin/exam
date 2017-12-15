@@ -10,5 +10,9 @@
 		<property name="name" type="string" length="20" column="organization_name"></property>
 		<property name="orderby" type="int" length="5" column="organization_orderby"></property>
 		<many-to-one name="area" column="area_id" class="com.alex.exam.model.Area"></many-to-one>
+		<set name="users" cascade="all">
+			<key column="org_id"></key>
+			<one-to-many class="com.alex.exam.model.User"/>
+		</set>
 	</class>
 </hibernate-mapping>
