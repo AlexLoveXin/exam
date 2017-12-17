@@ -1,6 +1,7 @@
 package com.alex.exam.action;
 
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -187,7 +188,7 @@ public class UserAction extends BaseAction {
 	private int page;
 	private String account;
 	private String name;
-	private String jie;
+	private String jie = Init.getConfig().get(Init.JIES).getValue();
 	private List<User> list;
 	private long total;
 	private long pages;
@@ -259,7 +260,7 @@ public class UserAction extends BaseAction {
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-		return "back_mamagelist";
+		return "back_managelist";
 	}
 	public String examlist() throws MyException {
 		try {
@@ -300,7 +301,44 @@ public class UserAction extends BaseAction {
 		return "back_examlist";
 	}
 	public String userexamdel() throws MyException {
-		
+		try {
+			if(null!=user && user.getId()!=0) {
+				userService.delete(user.getId());
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 		return "toexamlist";
 	}
+	public String examuseredit() throws MyException {
+		try {
+			if(null!=user && user.getId()!=0 && StringUtils.isNotBlank(user.getName()) && StringUtils.isNotBlank(user.getSex()) && StringUtils.isNotBlank(user.getMobile())) {
+				User user2 = userService.get(user.getId());
+				user2.setName(user.getName().trim());
+				user2.setSex(user.getSex().trim());
+				user2.setMobile(user.getMobile().trim());
+				user2.setIdcard(user.getIdcard().trim());
+				user2.setBirthday(user.getBirthday());
+				userService.update(user2);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return "toexamlist";
+	}
+	public void get() throws MyException {
+		try {
+			StringBuffer sb = new StringBuffer();
+			sb.append("{");
+			if(null!=user && user.getId()!=0) {
+				User user2 = userService.get(user.getId());
+				sb.append("\"id\":"+user2.getId()+",").append("\"account\":\""+user2.getAccount()+"\",").append("\"name\":\""+user2.getName()+"\",").append("\"sex\":\""+user2.getSex()+"\",").append("\"mobile\":\""+user2.getMobile()+"\",").append("\"idcard\":\""+user2.getIdcard()+"\",").append("\"birthday\":\""+(user2.getBirthday()!=null?new SimpleDateFormat("yyyy-MM-dd").format(user2.getBirthday()):"")+"\",").append("\"type\":\""+user2.getType()+"\",").append("\"jie\":\""+user2.getJie()+"\",").append("\"orderby\":"+user2.getOrderby()+",").append("\"registedate\":\""+(user2.getRegistedate()!=null?new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(user2.getRegistedate()):"")+"\",").append("\"orgId\":"+user2.getOrg().getId()+"");
+			}
+			sb.append("}");
+			printJson(sb.toString());
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+	//usermanagedel,manageuseredit,usermanageinitpassword,userexaminitpassword
 }

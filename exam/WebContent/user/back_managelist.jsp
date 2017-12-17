@@ -8,21 +8,19 @@
 <meta http-equiv="x-ua-compatible" content="IE=edge"><!-- 优先以ie的edge模式打开页面 -->
 <meta name="viewport" content="width=device-width,initial-scale=1"><!-- 适配移动端 -->
 <meta name="renderer" content="webkit"><!-- 刷新优先以google模式显示页面 -->
-<title>考试平台-地区管理</title>
+<title>管理平台-用户管理-管理用户</title>
 <link rel="stylesheet" type="text/css" href="../bootstrap/css/bootstrap.css">
 <!--[if lt IE 9]>
 <script type="text/javascript" src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script type="text/javascript" src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
-<link rel="stylesheet" type="text/css" href="../css/exam.css">
+<link rel="stylesheet" type="text/css" href="../css/manage.css">
 </head>
 <body>
-<!-- 删除数据form -->
-<form id="delform" action="${pageContext.request.contextPath }/area/delArea.do" method="post">
-	<input type="hidden" name="area.id" id="delid">
+<form id="userinitpasswordform" action="${pageContext.request.contextPath }/user/usermanageinitpasswordUser.do" method="post">
+	<input type="hidden" name="user.id" id="userinitpasswordid">
 </form>
-<!-- 删除确认弹出框 -->
-<div class="modal fade in" id="confirm" role="dialog" tabindex="-1" aria-labelledby="删除确认窗口">
+<div class="modal fade in" id="userdelconfirm" role="dialog" tabindex="-1" aria-labelledby="删除确认窗口">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -34,7 +32,29 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal" aria-label="否">否</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="是" onclick="del();">是</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="是" onclick="userdel();">是</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 删除数据form -->
+<form id="userdelform" action="${pageContext.request.contextPath }/user/usermanagedelUser.do" method="post">
+	<input type="hidden" name="user.id" id="userdelid">
+</form>
+<!-- 删除确认弹出框 -->
+<div class="modal fade in" id="userdelconfirm" role="dialog" tabindex="-1" aria-labelledby="删除确认窗口">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="关闭">&times;</button>
+                <h4 class="modal-title">删除确认<span class="sr-only">删除确认</span></h4>
+            </div>
+            <div class="modal-body">
+                <p>确认要删除吗？</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" aria-label="否">否</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="是" onclick="userdel();">是</button>
             </div>
         </div>
     </div>
@@ -48,55 +68,45 @@
     </h3>
     <div class="popover-content"></div>
 </div>
-<!-- 地区添加modal窗口 -->
-<div class="modal fade" id="addarea" role="dialog" tabindex="-1" aria-labelledby="新增地区窗口">
+<!-- 修改modal -->
+<div class="modal fade" id="usereditmodal" role="dialog" tabindex="-1" aria-labelledby="修改窗口">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="关闭">&times;</button>
-                <h4 class="modal-title">新增地区<span class="sr-only">新增地区</span></h4>
+                <h4 class="modal-title">修改用户<span class="sr-only">修改用户</span></h4>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" id="addform" method="post" action="${pageContext.request.contextPath }/area/addArea.do">
-                    <div class="form-group" id="areaNameFormGroupAdd">
-                        <label class="control-label col-md-2 col-sm-2" for="areaNameAdd">地区名称</label>
-                        <div class="col-md-10">
-                            <input type="text" class="form-control" name="area.name" placeholder="地区名称" id="areaNameAdd">
+                <form class="form-horizontal" id="usereditform" method="post" action="${pageContext.request.contextPath }/user/manageusereditUser.do">
+                    <div class="form-group" id="usereditaccountFormGroup">
+					    <label for="usereditaccount" class="control-label col-md-2 col-sm-2">账号</label>
+					    <div class="col-md-10 col-sm-10">
+						    <input type="text" id="usereditaccount" class="form-control" placeholder="账号" name="user.account" readonly="readonly">
+						    <input type="hidden" name="user.id" id="usereditid">
+	                        <input type="hidden" name="page" value="${page }">
+	                        <input type="hidden" name="name" value="${name }">
+	                        <input type="hidden" name="account" value="${account }">
                         </div>
-                    </div>
+				    </div>
+				    <div class="form-group has-feedback">
+					    <label for="usereditname" class="control-label col-md-2 col-sm-2">姓名</label>
+					    <div class="col-md-10 col-sm-10">
+						    <input type="text" id="usereditname" class="form-control" placeholder="姓名" name="user.name" autofocus required>
+						    <span class="glyphicon glyphicon-asterisk form-control-feedback" aria-hidden="true"></span>
+				    	</div>
+				    </div>
+				    <div class="form-group has-feedback">
+					    <label for="usereditmobile" class="control-label col-md-2 col-sm-2">手机号</label>
+					    <div class="col-md-10 col-sm-10">
+						    <input type="text" id="usereditmobile" class="form-control" placeholder="手机号" name="user.mobile" required>
+						    <span class="glyphicon glyphicon-asterisk form-control-feedback" aria-hidden="true"></span>
+				    	</div>
+				    </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal" aria-label="关闭">关闭</button>
-                <button type="button" class="btn btn-default" aria-label="保存" id="savebtn">保存</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- 地区修改modal -->
-<div class="modal fade" id="editarea" role="dialog" tabindex="-1" aria-labelledby="修改地区窗口">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="关闭">&times;</button>
-                <h4 class="modal-title">修改地区<span class="sr-only">修改地区</span></h4>
-            </div>
-            <div class="modal-body">
-                <form class="form-horizontal" id="editform" method="post" action="${pageContext.request.contextPath }/area/editArea.do">
-                    <div class="form-group" id="areaNameFormGroupEdit">
-                        <label class="control-label col-md-2 col-sm-2" for="areaNameEdit">地区名称</label>
-                        <div class="col-md-10">
-                            <input type="text" class="form-control" name="area.name" placeholder="地区名称" id="areaNameEdit">
-                            <input type="hidden" name="area.id" id="areaIdEdit">
-                            <input type="hidden" name="page" value="${page }">
-                            <input type="hidden" name="name" value="${name }">
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal" aria-label="关闭">关闭</button>
-                <button type="button" class="btn btn-default" aria-label="保存" id="editbtn">保存</button>
+                <button type="button" class="btn btn-default" aria-label="保存" id="usereditbtn">保存</button>
             </div>
         </div>
     </div>
@@ -109,32 +119,35 @@
     	<%@ include file="../common/left_back.jsp" %>
     	<!-- 内容部分 -->
     	<div class="col-md-10 col-md-offset-2 col-sm-10 col-sm-offset-2 main">
-            <h3 class="page-header">地区<span class="sr-only">地区</span></h3>
-            <form class="form-inline" id="searchform" method="post" action="${pageContext.request.contextPath }/area/listArea.do">
+            <h3 class="page-header">管理用户<span class="sr-only">管理用户</span></h3>
+            <form class="form-inline" id="usersearchform" method="post" action="${pageContext.request.contextPath }/user/managelistUser.do">
                 <div class="form-group">
-                    <label class="sr-only" for="areaName">地区名称</label>
-                    <input type="text" class="form-control" name="name" placeholder="地区名称" id="areaName" value="${name }">
+                    <label class="sr-only" for="userAccount">账号</label>
+                    <input type="text" class="form-control" name="account" placeholder="账号" id="userAccount" value="${account }">
                 </div>
-                <button type="button" class="btn btn-default" id="searchbtn">搜索<span class="sr-only">搜索</span></button>
-                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#addarea">新增<span class="sr-only">新增</span></button>
+                <div class="form-group">
+                    <label class="sr-only" for="userName">姓名</label>
+                    <input type="text" class="form-control" name="name" placeholder="姓名" id="userName" value="${name }">
+                </div>
+                <button type="button" class="btn btn-default" id="usersearchbtn">搜索<span class="sr-only">搜索</span></button>
             </form>
             <br>
             <div class="table-responsive">
                 <table class="table table-bordered table-striped table-hover">
                     <thead>
-                    	<tr><th>#<span class="sr-only">序号</span></th><th>地区名称<span class="sr-only">地区名称</span></th><th>顺序<span class="sr-only">顺序</span></th><th width="20%">操作选项<span class="sr-only">操作选项</span></th></tr>
+                    	<tr><th>#<span class="sr-only">序号</span></th><th>账号<span class="sr-only">账号</span></th><th>姓名<span class="sr-only">姓名</span></th><th>手机号<span class="sr-only">手机号</span></th><th>操作选项<span class="sr-only">操作选项</span></th></tr>
                     </thead>
                     <tbody>
                     	<c:forEach items="${list }" var="obj" varStatus="vstatus">
                     	<tr>
                     		<td>${vstatus.count }</td>
+                    		<td>${obj.account }</td>
                     		<td>${obj.name }</td>
-                    		<td>${obj.orderby }</td>
+                    		<td>${obj.mobile }</td>
                     		<td>
-                    			<button type="button" class="btn btn-xs btn-default" onclick="moveup('${obj.id}');">上移<span class="sr-only">上移</span></button>&nbsp;
-                    			<button type="button" class="btn btn-xs btn-default" onclick="movedown('${obj.id}');">下移<span class="sr-only">下移</span></button>&nbsp;
-                    			<button type="button" class="btn btn-xs btn-default" onclick="delconfirm('${obj.id}');">删除<span class="sr-only">删除</span></button>&nbsp;
-                    			<button type="button" class="btn btn-xs btn-default" onclick="edit('${obj.id}');">修改<span class="sr-only">修改</span></button>
+                    			<button type="button" class="btn btn-xs btn-default" onclick="userdelconfirm('${obj.id}');">删除<span class="sr-only">删除</span></button>&nbsp;
+                    			<button type="button" class="btn btn-xs btn-default" onclick="useredit('${obj.id}');">修改<span class="sr-only">修改</span></button>
+                    			<button type="button" class="btn btn-xs btn-default" onclick="userinitpasswordconfirm('${obj.id}');">初始化密码<span class="sr-only">初始化密码</span></button>
                     		</td>
                     	</tr>
                     	</c:forEach>
@@ -173,75 +186,13 @@
 <script type="text/javascript" src="../bootstrap/js/jquery-1.9.1.js"></script>
 <script type="text/javascript">
 	$(function(){
-		//新增窗口保存按钮点击事件
-		$('#savebtn').on('click', function(){
-			if($.trim($('#areaNameAdd').val())!=''){//地区名称不为空
-				//检查地区名称是否在数据库中存在
-				$.post('${pageContext.request.contextPath}/area/checkNameArea.do',{"area.name":$.trim($('#areaNameAdd').val())},function(result){
-					if(result.indexOf('<html')==-1) {
-						var r = eval('('+result+')');
-						if(r.exist) {
-							//弹出提示
-							tips('提示', '地区名称'+$.trim($('#areaNameAdd').val())+'在系统中已存在');
-					        //地区名称输入框加上错误样式
-					        $('#areaNameFormGroupAdd').addClass('has-error');
-						} else {
-							$('#areaNameAdd').val($.trim($('#areaNameAdd').val()));
-							$('#addform').submit();
-							$('#addarea').modal('hide');
-						}
-					} else {
-						tips('错误', '检查地区名称是否存在出错');
-					}
-				});
-			} else {//地区名称为空
-				//弹出提示
-				tips('提示', '地区名称为必填项');
-		        //地区名称输入框加上错误样式
-		        $('#areaNameFormGroupAdd').addClass('has-error');
-				return;
-			}
-		});
-		//新增窗口地区输入框一旦有输入，移除错误样式
-		$('#areaNameAdd').on('keydown', function(){
-			$('#areaNameFormGroupAdd').removeClass('has-error');
-		});
 		//查询按钮点击事件
-		$('#searchbtn').on('click', function(){
-			$('#searchform').submit();
+		$('#usersearchbtn').on('click', function(){
+			$('#usersearchform').submit();
 		});
 		//修改窗口保存按钮点击事件
-		$('#editbtn').on('click', function(){
-			if($.trim($('#areaNameEdit').val())!=''){//地区名称不为空
-				//检查地区名称是否在数据库中存在
-				$.post('${pageContext.request.contextPath}/area/checkNameArea.do',{"area.name":$.trim($('#areaNameEdit').val())},function(result){
-					if(result.indexOf('<html')==-1) {
-						var r = eval('('+result+')');
-						if(r.exist) {
-							//弹出提示
-					        tips('提示', '地区名称'+$.trim($('#areaNameEdit').val())+'在系统中已存在');
-					        //地区名称输入框加上错误样式
-					        $('#areaNameFormGroupEdit').addClass('has-error');
-						} else {
-							$('#areaNameEdit').val($.trim($('#areaNameEdit').val()));
-							$('#editform').submit();
-							$('#editarea').modal('hide');
-						}
-					} else {
-						tips('错误', '检查地区名称是否存在出错');
-					}
-				});
-			} else {//地区名称为空
-				//弹出提示
-		        tips('提示', '地区名称为必填项');
-		        //地区名称输入框加上错误样式
-		        $('#areaNameFormGroupEdit').addClass('has-error');
-				return;
-			}
-		});
-		//修改窗口地区输入框一旦有输入，移除错误样式
-		$('#areaNameEdit').on('keydown', function(){
-			$('#areaNameFormGroupEdit').removeClass('has-error');
+		$('#usereditbtn').on('click', function(){
+			$('#usereditform').submit();
 		});
 	});
 	//提示
@@ -257,49 +208,39 @@
         });
 	}
 	//修改
-	function edit(id) {
-		$.post('${pageContext.request.contextPath}/area/getArea.do',{"area.id":id},function(result){
+	function useredit(id) {
+		$.post('${pageContext.request.contextPath}/user/getUser.do',{"user.id":id},function(result){
 			if(result.indexOf('<html')==-1) {
 				var r = eval('('+result+')');
-				$('#areaNameEdit').val(r.name);
-				$('#areaIdEdit').val(r.id);
-				$('#editarea').modal('show');
+				$('#usereditid').val(r.id);
+				$('#usereditaccount').val(r.account);
+				$('#usereditname').val(r.name);
+				$('#usereditmobile').val(r.mobile);
+				$('#usereditmodal').modal('show');
 			} else {
-				tips('错误', '根据id获取地区信息出错');
+				tips('错误', '根据id获取信息出错');
 			}
 		});
 	}
 	//删除
-	function delconfirm(id) {
-		$('#confirm').modal('show');
-		$('#delid').val(id);
+	function userdelconfirm(id) {
+		$('#userdelconfirm').modal('show');
+		$('#userdelid').val(id);
 	}
-	function del() {
-		$('#delform').submit();
+	function userdel() {
+		$('#userdelform').submit();
+	}
+	//初始化密码
+	function userinitpasswordconfirm(id) {
+		$('#userinitpasswordconfirm').modal('show');
+		$('#userinitpasswordid').val(id);
+	}
+	function userinitpassword() {
+		$('#userinitpasswordform').submit();
 	}
 	//页码跳转
 	function toPage(page) {
-		window.location.href='${pageContext.request.contextPath}/area/listArea.do?page='+page+'&name='+$.trim($('#areaName').val());
-	}
-	//上移
-	function moveup(id) {
-		$.post('${pageContext.request.contextPath}/area/moveupArea.do',{"area.id":id,"name":$.trim($('#areaName').val())},function(result){
-			if(result.indexOf('<html')==-1) {
-				toPage('${page}');
-			} else {
-				tips('错误', '上移地区出错');
-			}
-		});
-	}
-	//下移
-	function movedown(id) {
-		$.post('${pageContext.request.contextPath}/area/movedownArea.do',{"area.id":id,"name":$.trim($('#areaName').val())},function(result){
-			if(result.indexOf('<html')==-1) {
-				toPage('${page}');
-			} else {
-				tips('错误', '下移地区出错');
-			}
-		});
+		window.location.href='${pageContext.request.contextPath}/user/managelistUser.do?page='+page+'&account='+$.trim($('#userAccount').val())+'&name='+$.trim($('#userName').val());
 	}
 </script>
 <script type="text/javascript" src="../bootstrap/js/bootstrap.js"></script>
